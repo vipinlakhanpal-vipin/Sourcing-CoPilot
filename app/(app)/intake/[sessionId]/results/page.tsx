@@ -39,10 +39,10 @@ export default async function ResultsPage({
   if (!configPackage) {
     return (
       <div className="space-y-4">
-        <Link href={`/intake/${sessionId}`} className="text-sm text-slate-500 hover:text-slate-900">
+        <Link href={`/intake/${sessionId}`} className="text-sm text-ink-400 hover:text-ink-800">
           ← Back to intake
         </Link>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-ink-500">
           No configuration package has been generated for this intake yet.
         </p>
       </div>
@@ -70,11 +70,11 @@ export default async function ResultsPage({
     <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <Link href={`/customers/${customer.id}`} className="text-sm text-slate-500 hover:text-slate-900">
+          <Link href={`/customers/${customer.id}`} className="text-sm text-ink-400 hover:text-ink-800">
             ← {customer.name}
           </Link>
-          <h1 className="mt-1 text-lg font-semibold text-slate-900">Configuration package</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="mt-1 text-lg font-semibold text-ink-800">Configuration package</h1>
+          <p className="text-sm text-ink-400">
             Generated {new Date(configPackage.generated_at).toLocaleString()}
           </p>
         </div>
@@ -85,7 +85,7 @@ export default async function ResultsPage({
           />
           <Link
             href={`/intake/${sessionId}`}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50"
           >
             Edit answers
           </Link>
@@ -106,23 +106,23 @@ export default async function ResultsPage({
       )}
 
       {uploadsWithUrls.length > 0 && (
-        <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-900">Master data files</h2>
-          <ul className="divide-y divide-slate-100">
+        <div className="space-y-2 rounded-lg border border-ink-100 bg-white p-4">
+          <h2 className="text-sm font-semibold text-ink-800">Master data files</h2>
+          <ul className="divide-y divide-ink-100">
             {uploadsWithUrls.map((u) => (
               <li key={u.id} className="flex items-center justify-between py-2 text-sm">
                 <span>
                   {u.file_name}{" "}
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-ink-400">
                     ({(u.size_bytes / 1024).toFixed(0)} KB)
                   </span>
                 </span>
                 {u.url ? (
-                  <a href={u.url} className="font-medium text-slate-900 underline">
+                  <a href={u.url} className="font-medium text-ink-800 underline">
                     Download
                   </a>
                 ) : (
-                  <span className="text-xs text-slate-400">Link unavailable</span>
+                  <span className="text-xs text-ink-400">Link unavailable</span>
                 )}
               </li>
             ))}
@@ -130,7 +130,7 @@ export default async function ResultsPage({
         </div>
       )}
 
-      <div className="rounded-lg border border-slate-200 bg-white p-6">
+      <div className="rounded-lg border border-ink-100 bg-white p-6">
         <article className="prose prose-sm prose-slate max-w-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{configPackage.summary_markdown}</ReactMarkdown>
         </article>

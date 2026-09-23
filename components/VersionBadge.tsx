@@ -39,7 +39,7 @@ export default function VersionBadge() {
     <button
       onClick={() => window.location.reload()}
       title={updateAvailable ? "A new version is available — click to refresh" : "Refresh"}
-      className="relative flex items-center gap-1 rounded-full border border-slate-200 px-2 py-0.5 text-xs font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+      className="relative flex items-center gap-1 rounded-full border border-ink-100 px-2 py-0.5 text-xs font-medium text-ink-400 hover:bg-ink-50 hover:text-ink-800"
     >
       <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.89M13.5 2v3.5H10" strokeLinecap="round" strokeLinejoin="round" />

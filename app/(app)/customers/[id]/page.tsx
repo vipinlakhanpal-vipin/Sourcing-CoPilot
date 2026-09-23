@@ -33,26 +33,26 @@ export default async function CustomerDetailPage({
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/dashboard" className="text-sm text-slate-500 hover:text-slate-900">
+        <Link href="/dashboard" className="text-sm text-ink-400 hover:text-ink-800">
           ← All customers
         </Link>
-        <h1 className="mt-1 text-lg font-semibold text-slate-900">{customer.name}</h1>
-        {customer.notes && <p className="mt-1 text-sm text-slate-500">{customer.notes}</p>}
+        <h1 className="mt-1 text-lg font-semibold text-ink-800">{customer.name}</h1>
+        {customer.notes && <p className="mt-1 text-sm text-ink-400">{customer.notes}</p>}
       </div>
 
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-slate-700">Intake sessions</h2>
+        <h2 className="text-sm font-medium text-ink-700">Intake sessions</h2>
         <StartIntakeButton customerId={customer.id} />
       </div>
 
-      <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
+      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-white">
         {intakeSessions?.map((s) => (
           <li key={s.id} className="flex items-center justify-between px-4 py-3">
             <div>
-              <p className="text-sm font-medium text-slate-900">
+              <p className="text-sm font-medium text-ink-800">
                 Started {new Date(s.created_at).toLocaleDateString()}
               </p>
-              <p className="text-xs text-slate-400 capitalize">
+              <p className="text-xs text-ink-400 capitalize">
                 {s.status.replace("_", " ")}
                 {s.respondent_name && ` · filled in by ${s.respondent_name}`}
               </p>
@@ -61,15 +61,15 @@ export default async function CustomerDetailPage({
               {s.status !== "completed" && <CopyShareLinkButton token={s.share_token} />}
               {s.status === "completed" ? (
                 <>
-                  <Link href={`/intake/${s.id}/results`} className="text-sm font-medium text-slate-900 underline">
+                  <Link href={`/intake/${s.id}/results`} className="text-sm font-medium text-ink-800 underline">
                     View config package
                   </Link>
-                  <Link href={`/intake/${s.id}`} className="text-sm text-slate-500 hover:text-slate-900">
+                  <Link href={`/intake/${s.id}`} className="text-sm text-ink-400 hover:text-ink-800">
                     Edit answers
                   </Link>
                 </>
               ) : (
-                <Link href={`/intake/${s.id}`} className="text-sm font-medium text-slate-900 underline">
+                <Link href={`/intake/${s.id}`} className="text-sm font-medium text-ink-800 underline">
                   Continue intake
                 </Link>
               )}

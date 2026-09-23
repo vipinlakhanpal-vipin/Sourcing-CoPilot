@@ -1,6 +1,13 @@
 import { z } from "zod";
 
-export type FieldType = "text" | "textarea" | "select" | "multiselect" | "roster" | "file";
+export type FieldType =
+  | "text"
+  | "textarea"
+  | "select"
+  | "multiselect"
+  | "roster"
+  | "file"
+  | "category_rules";
 
 export const ROSTER_ROLE_OPTIONS = [
   "Launch approver",
@@ -10,11 +17,21 @@ export const ROSTER_ROLE_OPTIONS = [
   "Other",
 ] as const;
 
+export const RFX_TYPE_OPTIONS = ["RFI", "RFP", "RFQ", "Reverse auction", "Forward auction"] as const;
+export const EVENT_RIGOR_OPTIONS = ["Single-round", "Multi-round"] as const;
+
 export interface RosterEntry {
   name: string;
   email: string;
   role: string;
   note?: string;
+}
+
+export interface CategoryRuleEntry {
+  category: string;
+  threshold: string;
+  rfxTypes: string[];
+  rigor: string;
 }
 
 export interface IntakeField {
@@ -23,6 +40,10 @@ export interface IntakeField {
   helpText?: string;
   type: FieldType;
   options?: string[];
+  /** For "multiselect"/"select": populate options at runtime from another
+   * field's current (string[]) answer instead of a fixed list — e.g. reuse
+   * whichever categories were chosen earlier in the intake. */
+  optionsFromField?: { areaId: string; fieldId: string };
   required: boolean;
   placeholder?: string;
 }
@@ -47,12 +68,12 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "industry_context",
     title: "Industry & business context",
     agentIntro:
-      "First, a little about the business itself — this shapes how we tailor category and supplier guidance.",
+      "First, a little about {{customer}} itself — this shapes how we tailor category and supplier guidance.",
     scope: "sourcing",
     fields: [
       {
         id: "industry",
-        label: "What industry is the customer in?",
+        label: "What industry is {{customer}} in?",
         type: "text",
         placeholder: "e.g. Pharmaceutical manufacturing",
         required: true,
@@ -66,7 +87,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
       },
       {
         id: "regions_of_operation",
-        label: "Which regions/countries does the business primarily operate in?",
+        label: "Which regions/countries does {{customer}} primarily operate in?",
         type: "text",
         placeholder: "e.g. North America and Western Europe",
         required: false,
@@ -112,7 +133,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
         id: "rfx_types",
         label: "Which RFx types are needed?",
         type: "multiselect",
-        options: ["RFI", "RFP", "RFQ", "Reverse auction"],
+        options: ["RFI", "RFP", "RFQ", "Reverse auction", "Forward auction"],
         required: true,
       },
       {
@@ -146,17 +167,31 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "template_policy_by_category_and_spend",
         label:
-          "For each category, which event type and rigor applies at which spend level? (this is the starting point for which templates get built)",
-        type: "textarea",
-        placeholder:
-          "e.g. Direct >$500k: RFP, multi-round, mandatory pre-qual; Direct <$500k: RFQ, single-round; MRO: RFQ regardless of size; Services >$250k: RFP with reference checks",
+          "For each category, add the event type(s) and rigor that apply at a given spend threshold — this is the starting point for which templates get built",
+        helpText: "e.g. Direct, >$500k, RFP + Reverse auction, Multi-round",
+        type: "category_rules",
+        optionsFromField: { areaId: "spend_categories", fieldId: "categories" },
         required: true,
       },
       {
-        id: "reverse_auction_usage",
-        label: "Which categories, if any, use reverse auctions — and under what conditions?",
-        type: "textarea",
-        placeholder: "e.g. MRO and commoditized Indirect spend with 3+ qualified bidders",
+        id: "auction_categories",
+        label: "Which categories, if any, use reverse or forward auctions?",
+        type: "multiselect",
+        optionsFromField: { areaId: "spend_categories", fieldId: "categories" },
+        required: false,
+      },
+      {
+        id: "auction_types",
+        label: "Which auction type(s) are used for those categories?",
+        type: "multiselect",
+        options: ["Reverse auction", "Forward auction"],
+        required: false,
+      },
+      {
+        id: "auction_conditions",
+        label: "Under what conditions should an auction be used (e.g. minimum qualified bidders)?",
+        type: "text",
+        placeholder: "e.g. 3+ qualified bidders",
         required: false,
       },
       {
@@ -269,7 +304,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "risk_mitigation_approach",
         label:
-          "How does the business currently mitigate supplier risk (financial stability, compliance, single-source dependency, ESG, etc.)?",
+          "How does {{customer}} currently mitigate supplier risk (financial stability, compliance, single-source dependency, ESG, etc.)?",
         type: "textarea",
         required: true,
       },
@@ -356,7 +391,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
       },
       {
         id: "currency_list_text",
-        label: "If not uploading a file, list the currencies this customer transacts in",
+        label: "If not uploading a file, list the currencies {{customer}} transacts in",
         type: "text",
         placeholder: "e.g. USD, EUR, GBP",
         required: false,
@@ -364,7 +399,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "erp_integration_preference",
         label:
-          "Is a one-time master-data import enough, or does the customer want live ERP integration for suppliers/items/currency?",
+          "Is a one-time master-data import enough, or does {{customer}} want live ERP integration for suppliers/items/currency?",
         type: "select",
         options: [
           "One-time file import is enough",
@@ -375,10 +410,31 @@ export const INTAKE_AREAS: IntakeArea[] = [
         required: true,
       },
       {
-        id: "erp_details",
-        label: "If ERP integration is wanted, which ERP and preferred method?",
-        type: "text",
-        placeholder: "e.g. SAP S/4HANA via SFTP flat files, or NetSuite via API",
+        id: "erp_name",
+        label: "If ERP integration is wanted, which ERP does the business use?",
+        type: "select",
+        options: [
+          "SAP S/4HANA",
+          "SAP ECC",
+          "Oracle Fusion Cloud ERP",
+          "Oracle NetSuite",
+          "Oracle E-Business Suite",
+          "Microsoft Dynamics 365",
+          "Workday Financials",
+          "Infor",
+          "Epicor",
+          "Sage Intacct",
+          "JD Edwards",
+          "PeopleSoft",
+          "Other",
+        ],
+        required: false,
+      },
+      {
+        id: "erp_integration_method",
+        label: "Preferred integration method",
+        type: "select",
+        options: ["API", "SFTP flat files", "Manual export/import", "Not decided yet"],
         required: false,
       },
     ],
@@ -425,8 +481,24 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "po_target_system",
         label: "If PO creation is separate, which system issues the PO?",
-        type: "text",
-        placeholder: "e.g. Coupa Procurement, SAP Ariba, the ERP directly",
+        type: "select",
+        options: [
+          "Coupa Procurement",
+          "SAP Ariba",
+          "SAP S/4HANA",
+          "SAP ECC",
+          "Oracle Fusion Cloud ERP",
+          "Oracle NetSuite",
+          "Oracle E-Business Suite",
+          "Microsoft Dynamics 365",
+          "Workday Financials",
+          "Infor",
+          "Epicor",
+          "Sage Intacct",
+          "JD Edwards",
+          "PeopleSoft",
+          "Other",
+        ],
         required: false,
       },
     ],
@@ -468,7 +540,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     fields: [
       {
         id: "modules_of_interest",
-        label: "Would the customer like to explore any of these other Coupa modules?",
+        label: "Would {{customer}} like to explore any of these other Coupa modules?",
         type: "multiselect",
         options: [
           "Supplier Information Management (SIM)",
@@ -491,7 +563,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
   },
 ];
 
-export type FieldValue = string | string[] | RosterEntry[];
+export type FieldValue = string | string[] | RosterEntry[] | CategoryRuleEntry[];
 export type IntakeAnswers = Record<string, Record<string, FieldValue>>;
 
 const rosterEntrySchema = z.object({
@@ -501,16 +573,32 @@ const rosterEntrySchema = z.object({
   note: z.string().trim().max(300).optional(),
 });
 
+const categoryRuleEntrySchema = z.object({
+  category: z.string().trim().min(1).max(100),
+  threshold: z.string().trim().max(200),
+  rfxTypes: z.array(z.string().max(50)).max(10),
+  rigor: z.string().trim().max(50),
+});
+
 export const fieldValueSchema = z.union([
   z.string().max(10000),
   z.array(z.string().max(500)).max(50),
   z.array(rosterEntrySchema).max(50),
+  z.array(categoryRuleEntrySchema).max(50),
 ]);
 
 export function isRosterEntryArray(value: unknown): value is RosterEntry[] {
   return (
     Array.isArray(value) &&
     (value.length === 0 || (typeof value[0] === "object" && value[0] !== null && "email" in value[0]))
+  );
+}
+
+export function isCategoryRuleArray(value: unknown): value is CategoryRuleEntry[] {
+  return (
+    Array.isArray(value) &&
+    (value.length === 0 ||
+      (typeof value[0] === "object" && value[0] !== null && "rfxTypes" in value[0]))
   );
 }
 
@@ -533,4 +621,9 @@ export function getIncompleteAreas(answers: IntakeAnswers): string[] {
 
 export function isIntakeComplete(answers: IntakeAnswers): boolean {
   return getIncompleteAreas(answers).length === 0;
+}
+
+/** Substitutes the {{customer}} token in schema copy with the real customer name. */
+export function personalize(text: string, customerName: string): string {
+  return text.replaceAll("{{customer}}", customerName);
 }

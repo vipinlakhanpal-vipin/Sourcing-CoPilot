@@ -22,7 +22,7 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="text-sm font-medium text-slate-500 hover:text-slate-900 disabled:opacity-60"
+      className="text-sm font-medium text-ink-400 hover:text-ink-800 disabled:opacity-60"
     >
       {loading ? "Logging out…" : "Log out"}
     </button>

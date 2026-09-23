@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { INTAKE_AREAS, IntakeAnswers, isRosterEntryArray } from "./intake-schema";
+import { INTAKE_AREAS, IntakeAnswers, isRosterEntryArray, isCategoryRuleArray } from "./intake-schema";
 
 const apiKey = process.env.ANTHROPIC_API_KEY;
 
@@ -36,6 +36,16 @@ function buildAnswersBlock(areas: typeof INTAKE_AREAS, answers: IntakeAnswers): 
             value.length > 0
               ? value
                   .map((r) => `${r.name} <${r.email}> — ${r.role}${r.note ? ` (${r.note})` : ""}`)
+                  .join("; ")
+              : "(not answered)";
+        } else if (isCategoryRuleArray(value)) {
+          formatted =
+            value.length > 0
+              ? value
+                  .map(
+                    (r) =>
+                      `${r.category}${r.threshold ? ` ${r.threshold}` : ""}: ${r.rfxTypes.join(" + ")}, ${r.rigor}`
+                  )
                   .join("; ")
               : "(not answered)";
         } else if (Array.isArray(value)) {
@@ -152,10 +162,42 @@ export async function generateConfigPackage(
     throw new Error("Anthropic response did not include the expected tool call");
   }
 
-  const input = toolUseBlock.input as { summary_markdown: string; flags: ConfigFlag[] };
+  const input = toolUseBlock.input as { summary_markdown?: unknown; flags?: unknown };
+
+  if (typeof input.summary_markdown !== "string" || !input.summary_markdown.trim()) {
+    throw new Error("Anthropic response did not include a usable summary_markdown");
+  }
 
   return {
     summaryMarkdown: input.summary_markdown,
-    flags: input.flags ?? [],
+    flags: normalizeFlags(input.flags),
   };
+}
+
+/**
+ * The model is expected to return `flags` as a structured array, but on rare
+ * occasions has been observed to return a string containing stray tool-call
+ * markup around an embedded JSON array. Recover what we can; never let a
+ * malformed flags value crash generation or get stored and later crash the
+ * results page.
+ */
+function normalizeFlags(value: unknown): ConfigFlag[] {
+  if (Array.isArray(value)) {
+    return value.filter(
+      (f): f is ConfigFlag =>
+        f && typeof f === "object" && typeof f.area === "string" && typeof f.message === "string"
+    );
+  }
+  if (typeof value === "string") {
+    const match = value.match(/\[[\s\S]*\]/);
+    if (match) {
+      try {
+        const parsed = JSON.parse(match[0]);
+        if (Array.isArray(parsed)) return normalizeFlags(parsed);
+      } catch {
+        // fall through to empty array below
+      }
+    }
+  }
+  return [];
 }

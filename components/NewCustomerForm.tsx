@@ -36,7 +36,7 @@ export default function NewCustomerForm() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+        className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
       >
         New customer / opportunity
       </button>
@@ -44,24 +44,24 @@ export default function NewCustomerForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-3 rounded-lg border border-ink-100 bg-white p-4 shadow-sm">
       <div>
-        <label className="block text-sm font-medium text-slate-700">Customer / opportunity name</label>
+        <label className="block text-sm font-medium text-ink-700">Customer / opportunity name</label>
         <input
           required
           autoFocus
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700">Notes (optional)</label>
+        <label className="block text-sm font-medium text-ink-700">Notes (optional)</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         />
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -69,14 +69,14 @@ export default function NewCustomerForm() {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+          className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? "Creating…" : "Create & start intake"}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-md px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-900"
+          className="rounded-md px-4 py-2 text-sm font-medium text-ink-400 hover:text-ink-800"
         >
           Cancel
         </button>

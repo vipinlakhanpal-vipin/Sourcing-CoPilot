@@ -19,7 +19,7 @@ export default function CopyShareLinkButton({ token }: { token: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="text-sm text-slate-500 hover:text-slate-900"
+      className="text-sm text-ink-400 hover:text-ink-800"
     >
       {copied ? "Link copied" : "Copy customer link"}
     </button>

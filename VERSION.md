@@ -6,6 +6,18 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.3 — 2026-09-23
+Visual identity, tabbed navigation, structured pick-lists, personalization.
+- New ledger-navy/brass visual identity applied across the whole app: Fraunces display type + IBM Plex Sans/Mono, a brand color scale replacing the plain black/slate palette, a logo mark, and a diagonal-textured page banner
+- Dashboard now shows real KPI tiles (total customers, intakes in progress, packages generated) instead of just a bare list
+- Intake navigation reworked into a Coupa-style tab strip: clicking a step shows only that step's content — no more accumulating chat-bubble history down the page. The final step shows a compact checklist of all areas before generating
+- "RFx & event templates by category" converted from a freeform paragraph into a structured repeatable rule builder (category + spend threshold + multi-select event types + rigor), matching the same list-and-add-row pattern as the named roster
+- Reverse/forward auction usage split into structured multi-selects (which categories, which auction type, trigger condition) instead of one free-text paragraph; "Forward auction" added as a first-class event type throughout
+- ERP name and PO-issuing system are now dropdowns of named systems (SAP S/4HANA, Oracle NetSuite, Microsoft Dynamics 365, Workday, etc.) instead of free text
+- Every question addressing "the customer" now uses the actual customer name (e.g. "What industry is Acme Distribution in?") via a `{{customer}}` template token resolved at render time
+- Fixed a real bug surfaced during testing: the AI's `flags` output occasionally came back as a malformed string instead of an array, which crashed the results page — generation now validates and recovers the array defensively instead of trusting the model's output shape blindly
+- Verified end-to-end: personalization, dynamic category dropdowns sourced from an earlier answer, the category-rules builder, ERP/PO dropdowns, tab-only navigation, and generation all confirmed working together on a fresh customer
+
 ## v1.2 — 2026-09-23
 Deep-dive intake: templates, named roster, master data uploads.
 - Intake expanded from 10 to 14 areas: RFx & event templates by category/spend, named approval &amp; grading roster, master data &amp; ERP integration, award/PO handoff
