@@ -97,6 +97,24 @@ create table if not exists coupa_connections (
 create index if not exists coupa_connections_customer_id_idx on coupa_connections(customer_id);
 
 -- ---------------------------------------------------------------------------
+-- intake_uploads: master-data files (item/supplier/currency master exports)
+-- attached to a "file" field. Bytes live in the "intake-uploads" Storage
+-- bucket; this row is just the pointer + metadata.
+-- ---------------------------------------------------------------------------
+create table if not exists intake_uploads (
+  id uuid primary key default gen_random_uuid(),
+  intake_session_id uuid not null references intake_sessions(id) on delete cascade,
+  area_id text not null,
+  field_id text not null,
+  file_name text not null,
+  storage_path text not null,
+  size_bytes bigint not null,
+  uploaded_at timestamptz not null default now()
+);
+
+create index if not exists intake_uploads_session_idx on intake_uploads(intake_session_id);
+
+-- ---------------------------------------------------------------------------
 -- updated_at bookkeeping
 -- ---------------------------------------------------------------------------
 create or replace function set_updated_at()
@@ -131,3 +149,4 @@ alter table customers enable row level security;
 alter table intake_sessions enable row level security;
 alter table config_packages enable row level security;
 alter table coupa_connections enable row level security;
+alter table intake_uploads enable row level security;

@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { INTAKE_AREAS, IntakeAnswers } from "./intake-schema";
+import { INTAKE_AREAS, IntakeAnswers, isRosterEntryArray } from "./intake-schema";
 
 const apiKey = process.env.ANTHROPIC_API_KEY;
 
@@ -30,13 +30,19 @@ function buildAnswersBlock(areas: typeof INTAKE_AREAS, answers: IntakeAnswers): 
       const areaAnswers = answers[area.id] ?? {};
       const fieldLines = area.fields.map((field) => {
         const value = areaAnswers[field.id];
-        const formatted = Array.isArray(value)
-          ? value.length > 0
-            ? value.join(", ")
-            : "(not answered)"
-          : value && value.trim().length > 0
-            ? value
-            : "(not answered)";
+        let formatted: string;
+        if (isRosterEntryArray(value)) {
+          formatted =
+            value.length > 0
+              ? value
+                  .map((r) => `${r.name} <${r.email}> — ${r.role}${r.note ? ` (${r.note})` : ""}`)
+                  .join("; ")
+              : "(not answered)";
+        } else if (Array.isArray(value)) {
+          formatted = value.length > 0 ? (value as string[]).join(", ") : "(not answered)";
+        } else {
+          formatted = value && value.trim().length > 0 ? value : "(not answered)";
+        }
         return `  - ${field.label}: ${formatted}`;
       });
       return `${area.title}:\n${fieldLines.join("\n")}`;
@@ -69,6 +75,17 @@ export async function generateConfigPackage(
       "Direct, Services, MRO, Capex, or whatever mix was given) combined with its spend value and " +
       "supplier count to recommend which event types and approval rigor fit that specific category — " +
       "do not give identical generic guidance to every category. " +
+      "When named approvers and graders are provided (with email and role), wire them into the " +
+      "Approval workflow and Evaluation & scoring sections by name and email against the specific " +
+      "threshold or scope they were given — e.g. 'Award approval for >$250k routes to Jane Doe " +
+      "(jane.doe@customer.com)' — rather than leaving the sections as an abstract policy description. " +
+      "If a role (launch approver, award approver, technical grader, commercial grader) has no named " +
+      "person assigned, flag that as a gap. When master-data file uploads are mentioned (item, " +
+      "supplier, or currency master), note in the Supplier base section whether each is ready for " +
+      "import or still outstanding, and reflect the customer's stated ERP integration preference " +
+      "(one-time import vs. live integration). Reflect the PO/award handoff preference explicitly in " +
+      "the Contract handoff section — whether award should create a PO directly or hand off to a " +
+      "separate P2P/ERP system. " +
       "Also review the sourcing answers for gaps or internal inconsistencies (e.g. approval thresholds " +
       "that don't nest logically, a scoring model marked price-only but cross-functional scorers " +
       "listed, an event volume that seems implausible for the stated supplier count) and flag them — " +

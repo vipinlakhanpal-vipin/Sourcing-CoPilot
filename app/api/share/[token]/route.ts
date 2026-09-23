@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { INTAKE_AREAS, IntakeAnswers, isIntakeComplete } from "@/lib/intake-schema";
+import { INTAKE_AREAS, IntakeAnswers, isIntakeComplete, fieldValueSchema } from "@/lib/intake-schema";
 
 async function loadSessionByToken(token: string) {
   const { data, error } = await supabaseAdmin
@@ -43,7 +43,7 @@ export async function GET(
 const patchSchema = z
   .object({
     areaId: z.string().optional(),
-    values: z.record(z.string(), z.union([z.string(), z.array(z.string())])).optional(),
+    values: z.record(z.string(), fieldValueSchema).optional(),
     advanceToStep: z.number().int().min(1).max(INTAKE_AREAS.length + 1).optional(),
     respondentName: z.string().trim().min(1).max(200).optional(),
     respondentEmail: z.string().trim().toLowerCase().email().max(320).optional(),

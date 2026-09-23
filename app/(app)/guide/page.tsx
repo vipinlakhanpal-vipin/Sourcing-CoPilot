@@ -76,6 +76,17 @@ export default function GuidePage() {
             is optional and is never turned into Coupa Sourcing configuration — it&apos;s captured
             purely for account planning around other Coupa modules.
           </li>
+          <li>
+            &ldquo;Named approvers &amp; graders&rdquo; captures real people — name, email, and role
+            (launch approver, award approver, technical grader, commercial grader) — so the
+            generated package routes approval and scoring to actual individuals, not just a policy
+            description.
+          </li>
+          <li>
+            &ldquo;Master data &amp; ERP integration&rdquo; accepts CSV/XLSX uploads for item,
+            supplier, and currency master data. Uploaded files are listed with a download link on
+            the results page for the implementation team.
+          </li>
         </ol>
         <ol className="grid gap-2 pl-0 text-sm sm:grid-cols-2">
           {INTAKE_AREAS.map((area, i) => (

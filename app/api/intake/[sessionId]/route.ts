@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { requireUserId, isErrorResponse } from "@/lib/api-helpers";
-import { INTAKE_AREAS, IntakeAnswers, isIntakeComplete } from "@/lib/intake-schema";
+import { INTAKE_AREAS, IntakeAnswers, isIntakeComplete, fieldValueSchema } from "@/lib/intake-schema";
 
 async function loadOwnedSession(sessionId: string, userId: string) {
   const { data, error } = await supabaseAdmin
@@ -57,7 +57,7 @@ export async function GET(
 
 const patchSchema = z.object({
   areaId: z.string(),
-  values: z.record(z.string(), z.union([z.string(), z.array(z.string())])),
+  values: z.record(z.string(), fieldValueSchema),
   advanceToStep: z.number().int().min(1).max(INTAKE_AREAS.length + 1).optional(),
 });
 

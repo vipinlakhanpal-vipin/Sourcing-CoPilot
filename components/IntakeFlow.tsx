@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
+  FieldValue,
   IntakeArea,
   IntakeAnswers,
   isAreaComplete,
   isFieldFilled,
+  isRosterEntryArray,
 } from "@/lib/intake-schema";
 import IntakeFieldInput from "./IntakeFieldInput";
 
@@ -25,8 +27,11 @@ interface Props {
   resultsHref?: string;
 }
 
-function summarizeAnswer(value: string | string[] | undefined): string {
+function summarizeAnswer(value: FieldValue | undefined): string {
   if (!isFieldFilled(value)) return "—";
+  if (isRosterEntryArray(value)) {
+    return value.map((r) => `${r.name} <${r.email}> — ${r.role}`).join("; ");
+  }
   return Array.isArray(value) ? value.join(", ") : (value as string);
 }
 
@@ -56,7 +61,7 @@ export default function IntakeFlow({
     [areas, answers]
   );
 
-  function updateField(areaId: string, fieldId: string, value: string | string[]) {
+  function updateField(areaId: string, fieldId: string, value: FieldValue) {
     setAnswers((prev) => ({
       ...prev,
       [areaId]: { ...prev[areaId], [fieldId]: value },
@@ -141,21 +146,41 @@ export default function IntakeFlow({
         </div>
       )}
 
-      <div className="flex gap-1.5">
-        {areas.map((area, i) => (
-          <button
-            key={area.id}
-            onClick={() => goToStep(i)}
-            title={area.title}
-            className={`h-1.5 flex-1 rounded-full transition-colors ${
-              i === stepIndex
-                ? "bg-slate-900"
-                : isAreaComplete(area, answers)
-                  ? "bg-slate-400"
-                  : "bg-slate-200"
-            }`}
-          />
-        ))}
+      <div>
+        <div className="flex items-center gap-1.5 px-1 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+          Process
+        </div>
+        <div className="flex gap-1 overflow-x-auto border-b border-slate-200 pb-px">
+          {areas.map((area, i) => {
+            const complete = isAreaComplete(area, answers);
+            const active = i === stepIndex;
+            return (
+              <button
+                key={area.id}
+                onClick={() => goToStep(i)}
+                title={area.title}
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
+                  active
+                    ? "border-slate-900 text-slate-900"
+                    : "border-transparent text-slate-400 hover:text-slate-700"
+                }`}
+              >
+                <span
+                  className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-semibold ${
+                    complete
+                      ? "bg-emerald-500 text-white"
+                      : active
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-200 text-slate-500"
+                  }`}
+                >
+                  {complete ? "✓" : i + 1}
+                </span>
+                {area.title}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -200,6 +225,11 @@ export default function IntakeFlow({
                       field={field}
                       value={answers[currentArea.id]?.[field.id]}
                       onChange={(value) => updateField(currentArea.id, field.id, value)}
+                      uploadUrl={
+                        field.type === "file"
+                          ? `${apiBasePath}/uploads?areaId=${currentArea.id}&fieldId=${field.id}`
+                          : undefined
+                      }
                     />
                   </div>
                 </div>

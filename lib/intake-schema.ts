@@ -1,4 +1,21 @@
-export type FieldType = "text" | "textarea" | "select" | "multiselect";
+import { z } from "zod";
+
+export type FieldType = "text" | "textarea" | "select" | "multiselect" | "roster" | "file";
+
+export const ROSTER_ROLE_OPTIONS = [
+  "Launch approver",
+  "Award approver",
+  "Technical grader",
+  "Commercial grader",
+  "Other",
+] as const;
+
+export interface RosterEntry {
+  name: string;
+  email: string;
+  role: string;
+  note?: string;
+}
 
 export interface IntakeField {
   id: string;
@@ -120,6 +137,42 @@ export const INTAKE_AREAS: IntakeArea[] = [
     ],
   },
   {
+    id: "rfx_templates",
+    title: "RFx & event templates by category",
+    agentIntro:
+      "Different categories usually need different event templates — let's map which template and rigor applies where.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "template_policy_by_category_and_spend",
+        label:
+          "For each category, which event type and rigor applies at which spend level? (this is the starting point for which templates get built)",
+        type: "textarea",
+        placeholder:
+          "e.g. Direct >$500k: RFP, multi-round, mandatory pre-qual; Direct <$500k: RFQ, single-round; MRO: RFQ regardless of size; Services >$250k: RFP with reference checks",
+        required: true,
+      },
+      {
+        id: "reverse_auction_usage",
+        label: "Which categories, if any, use reverse auctions — and under what conditions?",
+        type: "textarea",
+        placeholder: "e.g. MRO and commoditized Indirect spend with 3+ qualified bidders",
+        required: false,
+      },
+      {
+        id: "templates_exist_today",
+        label: "Do RFx/auction templates already exist somewhere (even outside Coupa), or do these need to be built from scratch?",
+        type: "select",
+        options: [
+          "Templates exist and can be reused/adapted",
+          "Partial templates exist",
+          "Nothing exists yet — build from scratch",
+        ],
+        required: true,
+      },
+    ],
+  },
+  {
     id: "evaluation_scoring",
     title: "Evaluation & scoring",
     agentIntro: "How should responses get evaluated once they come in?",
@@ -141,6 +194,14 @@ export const INTAKE_AREAS: IntakeArea[] = [
         type: "multiselect",
         options: ["Procurement only", "Technical", "Finance", "Legal", "Other cross-functional"],
         required: true,
+      },
+      {
+        id: "grading_split",
+        label:
+          "If scoring is split by discipline (e.g. Technical specs graded by IT/Tech, Commercial terms graded by Finance), describe the split",
+        type: "textarea",
+        placeholder: "e.g. IT/Tech grades technical fit and architecture; Finance grades pricing and payment terms",
+        required: false,
       },
       {
         id: "scorecards_defined",
@@ -251,6 +312,78 @@ export const INTAKE_AREAS: IntakeArea[] = [
     ],
   },
   {
+    id: "approval_grading_roster",
+    title: "Named approvers & graders",
+    agentIntro:
+      "Now the actual people — Coupa approval chains and scorecards get built around real named users, not just a policy description.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "roster",
+        label:
+          "Add each launch approver, award approver, technical grader, and commercial grader by name and email",
+        helpText:
+          "e.g. Jane Doe, jane.doe@customer.com, Award approver, \">$250k awards\"",
+        type: "roster",
+        required: true,
+      },
+    ],
+  },
+  {
+    id: "master_data_erp",
+    title: "Master data & ERP integration",
+    agentIntro:
+      "Coupa Sourcing needs item, supplier, and currency master data loaded before go-live — let's see what's ready and how it should get there.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "item_master_file",
+        label: "Item master export (CSV/XLSX from the ERP), if ready",
+        type: "file",
+        required: false,
+      },
+      {
+        id: "supplier_master_file",
+        label: "Supplier master export (CSV/XLSX), if ready",
+        type: "file",
+        required: false,
+      },
+      {
+        id: "currency_master_file",
+        label: "Currency master export, if ready (or just list the currencies used)",
+        type: "file",
+        required: false,
+      },
+      {
+        id: "currency_list_text",
+        label: "If not uploading a file, list the currencies this customer transacts in",
+        type: "text",
+        placeholder: "e.g. USD, EUR, GBP",
+        required: false,
+      },
+      {
+        id: "erp_integration_preference",
+        label:
+          "Is a one-time master-data import enough, or does the customer want live ERP integration for suppliers/items/currency?",
+        type: "select",
+        options: [
+          "One-time file import is enough",
+          "Wants live ERP integration eventually",
+          "Wants live ERP integration at go-live",
+          "Not decided yet",
+        ],
+        required: true,
+      },
+      {
+        id: "erp_details",
+        label: "If ERP integration is wanted, which ERP and preferred method?",
+        type: "text",
+        placeholder: "e.g. SAP S/4HANA via SFTP flat files, or NetSuite via API",
+        required: false,
+      },
+    ],
+  },
+  {
     id: "contract_handoff",
     title: "Contract handoff",
     agentIntro: "One more area before pain points: what happens after an award.",
@@ -269,6 +402,32 @@ export const INTAKE_AREAS: IntakeArea[] = [
         type: "text",
         placeholder: "e.g. Coupa Contracts, DocuSign CLM, SharePoint",
         required: true,
+      },
+    ],
+  },
+  {
+    id: "award_po_handoff",
+    title: "Award & purchase order handoff",
+    agentIntro: "One more handoff question: what happens to the PO once an award is made.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "po_creation_preference",
+        label: "Should awarding a sourcing event create the purchase order directly from Coupa Sourcing?",
+        type: "select",
+        options: [
+          "Yes — award should create the PO directly",
+          "No — PO creation is a separate step in a P2P/ERP system",
+          "Not decided yet",
+        ],
+        required: true,
+      },
+      {
+        id: "po_target_system",
+        label: "If PO creation is separate, which system issues the PO?",
+        type: "text",
+        placeholder: "e.g. Coupa Procurement, SAP Ariba, the ERP directly",
+        required: false,
       },
     ],
   },
@@ -332,9 +491,30 @@ export const INTAKE_AREAS: IntakeArea[] = [
   },
 ];
 
-export type IntakeAnswers = Record<string, Record<string, string | string[]>>;
+export type FieldValue = string | string[] | RosterEntry[];
+export type IntakeAnswers = Record<string, Record<string, FieldValue>>;
 
-export function isFieldFilled(value: string | string[] | undefined): boolean {
+const rosterEntrySchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  email: z.string().trim().toLowerCase().email().max(320),
+  role: z.string().trim().min(1).max(100),
+  note: z.string().trim().max(300).optional(),
+});
+
+export const fieldValueSchema = z.union([
+  z.string().max(10000),
+  z.array(z.string().max(500)).max(50),
+  z.array(rosterEntrySchema).max(50),
+]);
+
+export function isRosterEntryArray(value: unknown): value is RosterEntry[] {
+  return (
+    Array.isArray(value) &&
+    (value.length === 0 || (typeof value[0] === "object" && value[0] !== null && "email" in value[0]))
+  );
+}
+
+export function isFieldFilled(value: FieldValue | undefined): boolean {
   if (value === undefined || value === null) return false;
   if (Array.isArray(value)) return value.length > 0;
   return value.trim().length > 0;

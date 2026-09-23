@@ -51,6 +51,21 @@ export default async function ResultsPage({
 
   const flags = (configPackage.flags as ConfigFlag[]) ?? [];
 
+  const { data: uploads } = await supabaseAdmin
+    .from("intake_uploads")
+    .select("id, file_name, storage_path, size_bytes, uploaded_at")
+    .eq("intake_session_id", sessionId)
+    .order("uploaded_at", { ascending: false });
+
+  const uploadsWithUrls = await Promise.all(
+    (uploads ?? []).map(async (u) => {
+      const { data: signed } = await supabaseAdmin.storage
+        .from("intake-uploads")
+        .createSignedUrl(u.storage_path, 60 * 10);
+      return { ...u, url: signed?.signedUrl ?? null };
+    })
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between">
@@ -84,6 +99,31 @@ export default async function ResultsPage({
             {flags.map((flag, i) => (
               <li key={i} className="text-sm text-amber-800">
                 <span className="font-medium">{flag.area}:</span> {flag.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {uploadsWithUrls.length > 0 && (
+        <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
+          <h2 className="text-sm font-semibold text-slate-900">Master data files</h2>
+          <ul className="divide-y divide-slate-100">
+            {uploadsWithUrls.map((u) => (
+              <li key={u.id} className="flex items-center justify-between py-2 text-sm">
+                <span>
+                  {u.file_name}{" "}
+                  <span className="text-xs text-slate-400">
+                    ({(u.size_bytes / 1024).toFixed(0)} KB)
+                  </span>
+                </span>
+                {u.url ? (
+                  <a href={u.url} className="font-medium text-slate-900 underline">
+                    Download
+                  </a>
+                ) : (
+                  <span className="text-xs text-slate-400">Link unavailable</span>
+                )}
               </li>
             ))}
           </ul>

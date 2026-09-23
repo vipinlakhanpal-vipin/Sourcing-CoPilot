@@ -6,6 +6,16 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.2 — 2026-09-23
+Deep-dive intake: templates, named roster, master data uploads.
+- Intake expanded from 10 to 14 areas: RFx & event templates by category/spend, named approval &amp; grading roster, master data &amp; ERP integration, award/PO handoff
+- New "roster" field type: repeatable list of named people (name, email, role, scope) for launch/award approvers and technical/commercial graders — wired by name and email into the generated Approval Workflow and Evaluation &amp; Scoring sections, not just described as policy
+- New "file" field type: CSV/XLSX upload for item/supplier/currency master data, stored in a private Supabase Storage bucket (`intake-uploads`) with a new `intake_uploads` tracking table; uploaded files are listed with a signed download link on the results page
+- Generation prompt now cross-references named roles against thresholds (flagging missing approvers), master-data completeness, and the stated ERP/PO handoff preference
+- Intake area navigation replaced with a Coupa-style two-tier tab pattern (a "Process" strip of sub-tabs with a separator, checkmarks for completed areas) to scale past the old flat progress-dots bar
+- Verified end-to-end: 14 areas including a 3-person roster and a real file upload, generation correctly named Jane Doe/Sam Tech/Finn Ance into approval and scoring sections and caught a real gap (supplier master referenced but never uploaded)
+- Researched Coupa's own 2026 Inspire announcements (Coupa Compose, Navi Agent Studio, Autonomous Sourcing Event Creation) — Coupa now ships native agentic sourcing automation inside the platform; this tool's distinct niche is the pre-implementation, partner-led discovery/scoping phase before Coupa is configured, not competing with Coupa's own in-platform agents
+
 ## v1.1 — 2026-09-23
 Coupa connector — connection layer (no write actions yet).
 - New `coupa_connections` table: one OAuth2 client-credentials connection per customer per environment, client secret encrypted at rest (`lib/crypto.ts`, AES-256-GCM, `COUPA_CREDENTIAL_ENCRYPTION_KEY`)
