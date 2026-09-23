@@ -10,25 +10,63 @@ export interface IntakeField {
   placeholder?: string;
 }
 
+export type IntakeAreaScope = "sourcing" | "context";
+
 export interface IntakeArea {
   id: string;
   title: string;
   agentIntro: string;
   fields: IntakeField[];
+  /**
+   * "sourcing" areas directly drive the Coupa Sourcing configuration package.
+   * "context" areas are captured for account planning / future modules and
+   * must never be turned into Sourcing configuration instructions.
+   */
+  scope: IntakeAreaScope;
 }
 
 export const INTAKE_AREAS: IntakeArea[] = [
   {
+    id: "industry_context",
+    title: "Industry & business context",
+    agentIntro:
+      "First, a little about the business itself — this shapes how we tailor category and supplier guidance.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "industry",
+        label: "What industry is the customer in?",
+        type: "text",
+        placeholder: "e.g. Pharmaceutical manufacturing",
+        required: true,
+      },
+      {
+        id: "company_size",
+        label: "Approximate company size (employees or revenue)",
+        type: "text",
+        placeholder: "e.g. ~4,000 employees, ~$1.2B revenue",
+        required: false,
+      },
+      {
+        id: "regions_of_operation",
+        label: "Which regions/countries does the business primarily operate in?",
+        type: "text",
+        placeholder: "e.g. North America and Western Europe",
+        required: false,
+      },
+    ],
+  },
+  {
     id: "spend_categories",
     title: "Sourcing categories & spend",
-    agentIntro:
-      "Let's start with scope. Which categories of spend will run through Coupa Sourcing?",
+    agentIntro: "Now scope: which categories of spend will run through Coupa Sourcing?",
+    scope: "sourcing",
     fields: [
       {
         id: "categories",
         label: "Which spend categories will run through Coupa Sourcing?",
         type: "multiselect",
-        options: ["Indirect", "Direct", "Services", "Capex"],
+        options: ["Indirect", "Direct", "Services", "MRO", "Capex"],
         required: true,
       },
       {
@@ -51,6 +89,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "event_types",
     title: "Event types & volume",
     agentIntro: "Now let's talk about the sourcing events themselves.",
+    scope: "sourcing",
     fields: [
       {
         id: "rfx_types",
@@ -84,6 +123,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "evaluation_scoring",
     title: "Evaluation & scoring",
     agentIntro: "How should responses get evaluated once they come in?",
+    scope: "sourcing",
     fields: [
       {
         id: "scoring_model",
@@ -118,37 +158,10 @@ export const INTAKE_AREAS: IntakeArea[] = [
     ],
   },
   {
-    id: "approval_workflow",
-    title: "Approval workflow",
-    agentIntro: "Let's map the approval chain for launching and awarding events.",
-    fields: [
-      {
-        id: "launch_approval_thresholds",
-        label: "Approval hierarchy for launching a sourcing event (thresholds by value)",
-        type: "textarea",
-        placeholder: "e.g. <$50k: category manager; $50k-$250k: director; >$250k: VP",
-        required: true,
-      },
-      {
-        id: "award_approval_thresholds",
-        label: "Approval hierarchy for awarding (thresholds by value)",
-        type: "textarea",
-        placeholder: "e.g. <$50k: category manager; $50k-$250k: director; >$250k: VP + Finance",
-        required: true,
-      },
-      {
-        id: "segregation_of_duties",
-        label: "Any segregation-of-duties rules to enforce?",
-        type: "textarea",
-        placeholder: "e.g. event owner cannot also approve award",
-        required: false,
-      },
-    ],
-  },
-  {
     id: "supplier_base",
     title: "Supplier base",
     agentIntro: "Now, the supplier side.",
+    scope: "sourcing",
     fields: [
       {
         id: "master_list_format",
@@ -180,9 +193,68 @@ export const INTAKE_AREAS: IntakeArea[] = [
     ],
   },
   {
+    id: "supplier_risk_geography",
+    title: "Supplier risk & geography",
+    agentIntro: "Let's understand the supplier landscape and how risk is managed today.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "supplier_geography",
+        label: "Where are suppliers geographically located / which regions do they source from?",
+        type: "textarea",
+        placeholder: "e.g. Mostly domestic for Services; APAC-heavy for Direct materials",
+        required: true,
+      },
+      {
+        id: "risk_mitigation_approach",
+        label:
+          "How does the business currently mitigate supplier risk (financial stability, compliance, single-source dependency, ESG, etc.)?",
+        type: "textarea",
+        required: true,
+      },
+      {
+        id: "supplier_diversity_program",
+        label: "Is there a supplier diversity or ESG sourcing program in place?",
+        type: "select",
+        options: ["Yes, formal program", "Informal / ad hoc", "No", "Not sure"],
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "approval_workflow",
+    title: "Approval workflow",
+    agentIntro: "Let's map the approval chain for launching and awarding events.",
+    scope: "sourcing",
+    fields: [
+      {
+        id: "launch_approval_thresholds",
+        label: "Approval hierarchy for launching a sourcing event (thresholds by value)",
+        type: "textarea",
+        placeholder: "e.g. <$50k: category manager; $50k-$250k: director; >$250k: VP",
+        required: true,
+      },
+      {
+        id: "award_approval_thresholds",
+        label: "Approval hierarchy for awarding (thresholds by value)",
+        type: "textarea",
+        placeholder: "e.g. <$50k: category manager; $50k-$250k: director; >$250k: VP + Finance",
+        required: true,
+      },
+      {
+        id: "segregation_of_duties",
+        label: "Any segregation-of-duties rules to enforce?",
+        type: "textarea",
+        placeholder: "e.g. event owner cannot also approve award",
+        required: false,
+      },
+    ],
+  },
+  {
     id: "contract_handoff",
     title: "Contract handoff",
     agentIntro: "One more area before pain points: what happens after an award.",
+    scope: "sourcing",
     fields: [
       {
         id: "auto_trigger",
@@ -203,7 +275,8 @@ export const INTAKE_AREAS: IntakeArea[] = [
   {
     id: "pain_points",
     title: "Current-state pain points",
-    agentIntro: "Last section — help us understand why this project exists.",
+    agentIntro: "Help us understand why this project exists.",
+    scope: "sourcing",
     fields: [
       {
         id: "drivers",
@@ -222,6 +295,36 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "notes",
         label: "Anything else about current-state pain points?",
+        type: "textarea",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "broader_coupa_landscape",
+    title: "Broader Coupa landscape (context only)",
+    agentIntro:
+      "Last one, and it's optional — this section is for our team's planning only. Nothing here is used to configure Coupa Sourcing.",
+    scope: "context",
+    fields: [
+      {
+        id: "modules_of_interest",
+        label: "Would the customer like to explore any of these other Coupa modules?",
+        type: "multiselect",
+        options: [
+          "Supplier Information Management (SIM)",
+          "Supplier Risk & Performance",
+          "Contracts",
+          "Procurement / P2P",
+          "Invoicing",
+          "None of these right now",
+        ],
+        required: false,
+      },
+      {
+        id: "procurement_challenges",
+        label:
+          "What are the biggest procurement challenges today, across any part of the process — not just sourcing?",
         type: "textarea",
         required: false,
       },

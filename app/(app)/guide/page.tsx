@@ -55,13 +55,19 @@ export default function GuidePage() {
             intake session and takes you into it.
           </li>
           <li>
-            Answer each of the 7 areas below, one at a time. Required fields are marked with{" "}
-            <span className="text-red-500">*</span>. You can go back and edit any earlier area
-            before generating — your answers are saved after every &ldquo;Continue.&rdquo;
+            Answer each of the {INTAKE_AREAS.length} areas below, one at a time. Required fields
+            are marked with <span className="text-red-500">*</span>. You can go back and edit any
+            earlier area before generating — your answers are saved after every
+            &ldquo;Continue.&rdquo;
           </li>
           <li>
             You can leave and come back any time — an in-progress intake is saved under that
             customer&apos;s page, and &ldquo;Continue intake&rdquo; picks up where you left off.
+          </li>
+          <li>
+            One area, marked <span className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">context only</span>,
+            is optional and is never turned into Coupa Sourcing configuration — it&apos;s captured
+            purely for account planning around other Coupa modules.
           </li>
         </ol>
         <ol className="grid gap-2 pl-0 text-sm sm:grid-cols-2">
@@ -70,6 +76,11 @@ export default function GuidePage() {
               <span className="font-medium text-slate-900">
                 {i + 1}. {area.title}
               </span>
+              {area.scope === "context" && (
+                <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">
+                  context only
+                </span>
+              )}
               <p className="mt-1 text-slate-500">{area.agentIntro}</p>
             </li>
           ))}
@@ -85,14 +96,19 @@ export default function GuidePage() {
         </p>
         <ul className="list-disc space-y-1 pl-5 text-sm text-slate-600">
           <li>
-            Rewrites the raw answers into implementation-ready guidance, organized by the same 7
-            areas — e.g. turning &ldquo;RFI, RFP&rdquo; and an event volume into a concrete
-            recommendation for which event templates to enable and how to size them.
+            Rewrites the raw answers into implementation-ready guidance per sourcing area —
+            reasoning about each category&apos;s spend, supplier count, industry, and risk profile
+            together, so a high-risk Direct-materials category gets different guidance than a
+            low-risk Services category, instead of one generic answer for everything.
           </li>
           <li>
             Flags gaps or inconsistencies for the implementation team to confirm with the
             customer — e.g. a supplier count that doesn&apos;t reconcile with the master list, or
             scoring criteria with no assigned weights.
+          </li>
+          <li>
+            Closes with a separate &ldquo;Beyond Sourcing (context only)&rdquo; section built from
+            the context-only area — never mixed into the Sourcing configuration guidance above it.
           </li>
         </ul>
         <p className="text-sm text-slate-600">
@@ -129,7 +145,10 @@ export default function GuidePage() {
       <section id="out-of-scope" className="space-y-3 scroll-mt-6">
         <h2 className="text-base font-semibold text-slate-900">What this tool does not do</h2>
         <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          <p className="font-medium">Sourcing CoPilot has no connection to any Coupa instance.</p>
+          <p className="font-medium">
+            Today, Sourcing CoPilot has no connection to any Coupa instance — it stops at
+            producing the package.
+          </p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>It does not authenticate to, read from, or write to Coupa Test or Coupa Production.</li>
             <li>
@@ -137,11 +156,20 @@ export default function GuidePage() {
               workflows, or supplier records.
             </li>
             <li>It does not copy or promote configuration between Coupa environments.</li>
-            <li>
-              It does not perform ERP or SFTP integration — that is explicitly a separate
-              integration agent&apos;s job, taking this tool&apos;s JSON export as its input.
-            </li>
           </ul>
+        </div>
+        <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+          <p className="font-medium text-slate-900">Roadmap direction (not yet built)</p>
+          <p className="mt-1">
+            Coupa publishes an SFTP-based flat-file import mechanism (Commodity Import, Content
+            Group Import, Suppliers Import, User/Approval Group Import) — the same channel an ERP
+            integration agent would use. That makes it plausible to auto-generate ready-to-import
+            files for categories, suppliers, and group membership straight from this tool&apos;s
+            output. Approval-rule logic and event-template design don&apos;t appear to have a
+            public automation path and likely stay UI-configured. This needs confirmation from a
+            Coupa partner/TAM contact before being built, since public docs don&apos;t always
+            reflect the full picture.
+          </p>
         </div>
       </section>
 
