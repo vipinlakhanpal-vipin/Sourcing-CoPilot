@@ -51,18 +51,23 @@ export default function GuidePage() {
         <ol className="list-decimal space-y-2 pl-5 text-sm text-slate-600">
           <li>
             From the <Link href="/dashboard" className="underline">dashboard</Link>, click{" "}
-            <strong>New customer / opportunity</strong> and name it. This immediately starts an
-            intake session and takes you into it.
+            <strong>New customer / opportunity</strong> and name it. You land on that
+            customer&apos;s page with two ways to run the intake:
+            <strong> Continue intake</strong> to walk the customer through it yourself, or{" "}
+            <strong>Copy customer link</strong> to send them a self-service link so they fill it
+            in on their own time — no login required on their end. Either way, the answers land in
+            the same place.
           </li>
           <li>
-            Answer each of the {INTAKE_AREAS.length} areas below, one at a time. Required fields
-            are marked with <span className="text-red-500">*</span>. You can go back and edit any
-            earlier area before generating — your answers are saved after every
-            &ldquo;Continue.&rdquo;
+            A self-service link opens by asking the customer&apos;s name (and optionally email),
+            then walks them through the same {INTAKE_AREAS.length} areas. Required fields are
+            marked with <span className="text-red-500">*</span>. Progress is saved after every
+            &ldquo;Continue,&rdquo; so they can close the tab and resume later from the same link.
           </li>
           <li>
-            You can leave and come back any time — an in-progress intake is saved under that
-            customer&apos;s page, and &ldquo;Continue intake&rdquo; picks up where you left off.
+            Once the customer submits their side, the intake still shows as
+            &ldquo;in progress&rdquo; on your dashboard — generating the package is a deliberate,
+            rep-only step (see below).
           </li>
           <li>
             One area, marked <span className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">context only</span>,

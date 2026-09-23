@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import StartIntakeButton from "@/components/StartIntakeButton";
+import CopyShareLinkButton from "@/components/CopyShareLinkButton";
 
 export default async function CustomerDetailPage({
   params,
@@ -24,7 +25,7 @@ export default async function CustomerDetailPage({
 
   const { data: intakeSessions } = await supabaseAdmin
     .from("intake_sessions")
-    .select("id, status, current_step, created_at, completed_at")
+    .select("id, status, current_step, created_at, completed_at, share_token, respondent_name")
     .eq("customer_id", id)
     .order("created_at", { ascending: false });
 
@@ -50,9 +51,13 @@ export default async function CustomerDetailPage({
               <p className="text-sm font-medium text-slate-900">
                 Started {new Date(s.created_at).toLocaleDateString()}
               </p>
-              <p className="text-xs text-slate-400 capitalize">{s.status.replace("_", " ")}</p>
+              <p className="text-xs text-slate-400 capitalize">
+                {s.status.replace("_", " ")}
+                {s.respondent_name && ` · filled in by ${s.respondent_name}`}
+              </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
+              {s.status !== "completed" && <CopyShareLinkButton token={s.share_token} />}
               {s.status === "completed" ? (
                 <>
                   <Link href={`/intake/${s.id}/results`} className="text-sm font-medium text-slate-900 underline">

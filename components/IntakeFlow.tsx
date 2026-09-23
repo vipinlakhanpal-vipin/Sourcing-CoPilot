@@ -12,12 +12,17 @@ import {
 import IntakeFieldInput from "./IntakeFieldInput";
 
 interface Props {
-  sessionId: string;
+  /** Base path for save/generate requests, e.g. `/api/intake/<id>` or `/api/share/<token>`. */
+  apiBasePath: string;
+  /** "rep" is the authenticated internal flow (can generate a package). "share" is the
+   * customer-facing public link (intake only — generation stays rep-only). */
+  mode: "rep" | "share";
   customerName: string;
   areas: IntakeArea[];
   initialAnswers: IntakeAnswers;
   initialStep: number;
   initialStatus: "in_progress" | "completed";
+  resultsHref?: string;
 }
 
 function summarizeAnswer(value: string | string[] | undefined): string {
@@ -26,12 +31,14 @@ function summarizeAnswer(value: string | string[] | undefined): string {
 }
 
 export default function IntakeFlow({
-  sessionId,
+  apiBasePath,
+  mode,
   customerName,
   areas,
   initialAnswers,
   initialStep,
   initialStatus,
+  resultsHref,
 }: Props) {
   const router = useRouter();
   const [answers, setAnswers] = useState<IntakeAnswers>(initialAnswers);
@@ -60,7 +67,7 @@ export default function IntakeFlow({
     setError(null);
     setSaving(true);
     try {
-      const res = await fetch(`/api/intake/${sessionId}`, {
+      const res = await fetch(apiBasePath, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -96,17 +103,18 @@ export default function IntakeFlow({
   }
 
   async function handleGenerate() {
+    if (mode !== "rep" || !resultsHref) return;
     setError(null);
     setGenerating(true);
     try {
-      const res = await fetch(`/api/intake/${sessionId}/generate`, { method: "POST" });
+      const res = await fetch(`${apiBasePath}/generate`, { method: "POST" });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Could not generate the configuration package");
         return;
       }
       setStatus("completed");
-      router.push(`/intake/${sessionId}/results`);
+      router.push(resultsHref);
     } finally {
       setGenerating(false);
     }
@@ -115,17 +123,19 @@ export default function IntakeFlow({
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/dashboard" className="text-sm text-slate-500 hover:text-slate-900">
-          ← All customers
-        </Link>
+        {mode === "rep" && (
+          <Link href="/dashboard" className="text-sm text-slate-500 hover:text-slate-900">
+            ← All customers
+          </Link>
+        )}
         <h1 className="mt-1 text-lg font-semibold text-slate-900">{customerName}</h1>
-        <p className="text-sm text-slate-500">Coupa Sourcing intake — 7 areas</p>
+        <p className="text-sm text-slate-500">Coupa Sourcing intake — {areas.length} areas</p>
       </div>
 
-      {status === "completed" && (
+      {mode === "rep" && status === "completed" && resultsHref && (
         <div className="flex items-center justify-between rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
           <span>This intake is complete. Editing an answer here does not regenerate the config package.</span>
-          <Link href={`/intake/${sessionId}/results`} className="font-medium underline">
+          <Link href={resultsHref} className="font-medium underline">
             View package
           </Link>
         </div>
@@ -216,7 +226,7 @@ export default function IntakeFlow({
           </div>
         )}
 
-        {!currentArea && (
+        {!currentArea && mode === "rep" && (
           <div className="space-y-4">
             <div className="max-w-lg rounded-2xl rounded-tl-sm bg-slate-100 px-4 py-2.5 text-sm text-slate-700">
               That&apos;s everything. Ready to generate the configuration package?
@@ -243,6 +253,32 @@ export default function IntakeFlow({
                   {generating ? "Generating…" : "Generate configuration package"}
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {!currentArea && mode === "share" && (
+          <div className="space-y-4">
+            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-slate-100 px-4 py-2.5 text-sm text-slate-700">
+              That&apos;s everything — thank you.
+            </div>
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900">
+              {allComplete ? (
+                <p>
+                  Your answers have been submitted. Our team will review them and follow up with
+                  next steps — you don&apos;t need to do anything else here.
+                </p>
+              ) : (
+                <p className="text-amber-700">
+                  A few required fields are still missing — go back and fill them in.
+                </p>
+              )}
+              <button
+                onClick={() => goToStep(areas.length - 1)}
+                className="mt-3 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                Back to last section
+              </button>
             </div>
           </div>
         )}

@@ -28,7 +28,9 @@ export default async function IntakeSessionPage({
 
   return (
     <IntakeFlow
-      sessionId={intakeSession.id}
+      mode="rep"
+      apiBasePath={`/api/intake/${intakeSession.id}`}
+      resultsHref={`/intake/${intakeSession.id}/results`}
       customerName={customer.name}
       areas={INTAKE_AREAS}
       initialAnswers={(intakeSession.answers as IntakeAnswers) ?? {}}

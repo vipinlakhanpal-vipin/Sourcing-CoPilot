@@ -22,6 +22,12 @@ async function isValidSession(token: string | undefined): Promise<boolean> {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Customer-facing share links are public regardless of the rep's own auth state.
+  if (pathname.startsWith("/share/")) {
+    return NextResponse.next();
+  }
+
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const authed = await isValidSession(token);
 

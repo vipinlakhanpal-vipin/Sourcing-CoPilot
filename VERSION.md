@@ -1,5 +1,18 @@
 # Version history
 
+Versioning restarts here at **v1.0**, matching the in-app version badge (top-right of the
+header). The badge shows the version baked into the visitor's currently loaded bundle; bump
+`lib/version.ts` by +0.1 with every push, and the badge flags a red dot to anyone with an older
+version still open in their browser, prompting a refresh. Prior entries below used a different
+(0.x) numbering and are kept for history only.
+
+## v1.0 — 2026-09-23
+Self-service customer link + version indicator.
+- Customer-facing self-service link (`/share/<token>`): a rep can copy a link from the customer's page instead of running the intake themselves — no login required for the customer, same 10-area flow, asks for the respondent's name (and optional email) first
+- Generation stays rep-only: the share link ends in a plain "thanks, submitted" screen, never exposes the AI-generated package or its flags to the customer
+- New customer creation now lands on the customer's page (showing both "Continue intake" and "Copy customer link") instead of assuming the rep will do the intake themselves
+- In-app version badge next to the app name — polls for the currently deployed version and shows a red dot + refresh button when a visitor's open tab is behind the latest push
+
 ## 0.2.0 — 2026-09-23
 Deeper intake + in-app Guide.
 - In-app "Guide" tab explaining the intake → generation → human handoff flow, and explicitly what the app does not do (no Coupa connection today)

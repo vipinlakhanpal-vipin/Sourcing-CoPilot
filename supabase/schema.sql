@@ -42,12 +42,19 @@ create table if not exists intake_sessions (
   status text not null default 'in_progress' check (status in ('in_progress', 'completed')),
   current_step int not null default 1,
   answers jsonb not null default '{}'::jsonb,
+  -- Unguessable token for the customer-facing self-service link (/share/<token>).
+  -- Distinct from `id` so the internal id shown in rep-facing URLs is never the
+  -- same value handed to a customer.
+  share_token uuid not null default gen_random_uuid() unique,
+  respondent_name text,
+  respondent_email text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   completed_at timestamptz
 );
 
 create index if not exists intake_sessions_customer_id_idx on intake_sessions(customer_id);
+create index if not exists intake_sessions_share_token_idx on intake_sessions(share_token);
 
 -- ---------------------------------------------------------------------------
 -- config_packages: generated structured output per completed intake session

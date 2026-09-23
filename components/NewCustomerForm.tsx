@@ -26,7 +26,7 @@ export default function NewCustomerForm() {
         setError(data.error ?? "Could not create customer");
         return;
       }
-      router.push(`/intake/${data.intakeSessionId}`);
+      router.push(`/customers/${data.customerId}`);
     } finally {
       setLoading(false);
     }
