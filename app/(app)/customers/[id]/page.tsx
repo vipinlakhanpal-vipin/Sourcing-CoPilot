@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import StartIntakeButton from "@/components/StartIntakeButton";
 import CopyShareLinkButton from "@/components/CopyShareLinkButton";
+import CoupaConnectionCard from "@/components/CoupaConnectionCard";
 
 export default async function CustomerDetailPage({
   params,
@@ -76,6 +77,8 @@ export default async function CustomerDetailPage({
           </li>
         ))}
       </ul>
+
+      <CoupaConnectionCard customerId={customer.id} />
     </div>
   );
 }

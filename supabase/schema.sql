@@ -73,6 +73,30 @@ create index if not exists config_packages_intake_session_id_idx on config_packa
 create index if not exists config_packages_customer_id_idx on config_packages(customer_id);
 
 -- ---------------------------------------------------------------------------
+-- coupa_connections: one Coupa tenant connection per customer per environment.
+-- client_secret is encrypted at rest (see lib/crypto.ts) — this table never
+-- holds a plaintext secret, and only server-side code with the service_role
+-- key and COUPA_CREDENTIAL_ENCRYPTION_KEY can decrypt it.
+-- ---------------------------------------------------------------------------
+create table if not exists coupa_connections (
+  id uuid primary key default gen_random_uuid(),
+  customer_id uuid not null references customers(id) on delete cascade,
+  environment text not null default 'test' check (environment in ('test', 'production')),
+  instance_hostname text not null,
+  client_id text not null,
+  encrypted_client_secret text not null,
+  scope text,
+  last_tested_at timestamptz,
+  last_test_ok boolean,
+  last_test_message text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (customer_id, environment)
+);
+
+create index if not exists coupa_connections_customer_id_idx on coupa_connections(customer_id);
+
+-- ---------------------------------------------------------------------------
 -- updated_at bookkeeping
 -- ---------------------------------------------------------------------------
 create or replace function set_updated_at()
@@ -93,6 +117,11 @@ create trigger intake_sessions_set_updated_at
   before update on intake_sessions
   for each row execute function set_updated_at();
 
+drop trigger if exists coupa_connections_set_updated_at on coupa_connections;
+create trigger coupa_connections_set_updated_at
+  before update on coupa_connections
+  for each row execute function set_updated_at();
+
 -- ---------------------------------------------------------------------------
 -- RLS: deny-by-default. All reads/writes happen server-side with the
 -- service_role key, which bypasses RLS entirely.
@@ -101,3 +130,4 @@ alter table users enable row level security;
 alter table customers enable row level security;
 alter table intake_sessions enable row level security;
 alter table config_packages enable row level security;
+alter table coupa_connections enable row level security;

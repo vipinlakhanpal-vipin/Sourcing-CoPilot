@@ -6,6 +6,14 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.1 — 2026-09-23
+Coupa connector — connection layer (no write actions yet).
+- New `coupa_connections` table: one OAuth2 client-credentials connection per customer per environment, client secret encrypted at rest (`lib/crypto.ts`, AES-256-GCM, `COUPA_CREDENTIAL_ENCRYPTION_KEY`)
+- `lib/coupa/auth.ts` implements Coupa's documented OAuth2 client-credentials token exchange (`POST /oauth2/token`) — the current auth method; legacy API keys are deprecated per Coupa's own docs
+- `lib/coupa/client.ts` — `testConnection()` fetches a real token and makes one safe, read-only API call to confirm access; creates/changes nothing
+- "Coupa Test connection" card on the customer page: save instance URL/client ID/secret/scope, then "Test connection" — verified against a real (deliberately invalid) URL end-to-end: encrypt → store → decrypt → real network attempt → clear diagnosable error surfaced in the UI, not a fake success
+- Guide tab rewritten to state precisely what's real (a working, testable connection) vs. not yet built (no create/update actions against Coupa) — and the real constraint found in Coupa's own Sourcing API docs: creating an event requires an existing `source_id` (template), so full template creation isn't API-reachable per public documentation
+
 ## v1.0 — 2026-09-23
 Self-service customer link + version indicator.
 - Customer-facing self-service link (`/share/<token>`): a rep can copy a link from the customer's page instead of running the intake themselves — no login required for the customer, same 10-area flow, asks for the respondent's name (and optional email) first

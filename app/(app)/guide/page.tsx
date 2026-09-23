@@ -6,7 +6,7 @@ const SECTIONS = [
   { id: "running-an-intake", label: "Running an intake" },
   { id: "generating-a-package", label: "Generating a package" },
   { id: "after-generation", label: "After you generate a package" },
-  { id: "out-of-scope", label: "What this tool does not do" },
+  { id: "out-of-scope", label: "Coupa connection status" },
   { id: "faq", label: "FAQ" },
 ];
 
@@ -32,15 +32,17 @@ export default function GuidePage() {
         <h2 className="text-base font-semibold text-slate-900">What this tool is</h2>
         <p className="text-sm text-slate-600">
           Sourcing CoPilot takes a customer from &ldquo;we want Coupa Sourcing&rdquo; to a fully
-          specified, ready-to-configure setup. It interviews the customer through 7 guided
-          areas, then generates a structured <strong>configuration package</strong> — a readable
-          document plus the underlying structured data — for SCP&apos;s implementation team.
+          specified, ready-to-configure setup. It interviews the customer through{" "}
+          {INTAKE_AREAS.length} guided areas, then generates a structured{" "}
+          <strong>configuration package</strong> — a readable document plus the underlying
+          structured data — for SCP&apos;s implementation team.
         </p>
         <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-          It produces a specification of what to build in Coupa. It does not build anything in
-          Coupa itself. See{" "}
+          It produces a specification of what to build in Coupa, and can now connect to a real
+          Coupa tenant to confirm access — but does not yet create or change anything inside
+          Coupa. See{" "}
           <a href="#out-of-scope" className="underline">
-            What this tool does not do
+            Coupa connection status
           </a>{" "}
           below.
         </div>
@@ -148,32 +150,29 @@ export default function GuidePage() {
       </section>
 
       <section id="out-of-scope" className="space-y-3 scroll-mt-6">
-        <h2 className="text-base font-semibold text-slate-900">What this tool does not do</h2>
-        <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          <p className="font-medium">
-            Today, Sourcing CoPilot has no connection to any Coupa instance — it stops at
-            producing the package.
-          </p>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li>It does not authenticate to, read from, or write to Coupa Test or Coupa Production.</li>
-            <li>
-              It does not create or modify Coupa objects — categories, event templates, approval
-              workflows, or supplier records.
-            </li>
-            <li>It does not copy or promote configuration between Coupa environments.</li>
-          </ul>
-        </div>
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-          <p className="font-medium text-slate-900">Roadmap direction (not yet built)</p>
+        <h2 className="text-base font-semibold text-slate-900">Coupa connection — what&apos;s real today</h2>
+        <div className="rounded-md border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+          <p className="font-medium">Built and working: a real, testable connection to a Coupa tenant.</p>
           <p className="mt-1">
-            Coupa publishes an SFTP-based flat-file import mechanism (Commodity Import, Content
-            Group Import, Suppliers Import, User/Approval Group Import) — the same channel an ERP
-            integration agent would use. That makes it plausible to auto-generate ready-to-import
-            files for categories, suppliers, and group membership straight from this tool&apos;s
-            output. Approval-rule logic and event-template design don&apos;t appear to have a
-            public automation path and likely stay UI-configured. This needs confirmation from a
-            Coupa partner/TAM contact before being built, since public docs don&apos;t always
-            reflect the full picture.
+            On a customer&apos;s page, &ldquo;Coupa Test connection&rdquo; stores an OAuth2
+            client-credentials connection (instance URL, client ID/secret, scope) — the current,
+            documented Coupa authentication method. &ldquo;Test connection&rdquo; actually
+            exchanges those credentials for a real access token and makes one safe, read-only
+            call to confirm API access. Nothing is created, changed, or deleted by this.
+          </p>
+        </div>
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <p className="font-medium">Not yet built: anything that writes to Coupa.</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            <li>No categories, suppliers, events, or approval rules are created or modified.</li>
+            <li>No configuration is copied or promoted between Coupa environments.</li>
+          </ul>
+          <p className="mt-2">
+            Per Coupa&apos;s own published Sourcing API, creating an event requires a{" "}
+            <code>source_id</code> — an existing event/template already built in Coupa&apos;s UI —
+            so full template creation from nothing does not appear to be API-reachable. Approval-
+            rule logic looks UI-only too. This is based on public documentation, not a live test
+            against a real tenant, so treat it as informed, not certain.
           </p>
         </div>
       </section>
