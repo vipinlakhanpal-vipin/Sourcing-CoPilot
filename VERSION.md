@@ -6,6 +6,17 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.6 — 2026-09-24
+Filled-color data entry, filled section titles, and a dedicated Projects tab.
+- Every text/textarea/select where an answer actually gets typed — the Coupa Test connection
+  form and all 14 intake areas — now has a solid navy fill instead of a plain white box, so a
+  field reads unmistakably as "type here." Section titles (e.g. "Industry & business context",
+  "Coupa Test connection") are now solid teal pills, matching the same filled-title treatment
+  already used on Admin Console's "Invite a team member" heading.
+- Split the customer/opportunity list out of Dashboard into its own "Projects" primary tab (own
+  page at /projects) — Dashboard now shows KPIs plus a link into it, matching the same pattern
+  used earlier to give Dashboard its own tab instead of it being the implicit home.
+
 ## v1.5 — 2026-09-24
 Visual identity rebuilt to match RFP CoPilot; real Admin Console under Settings.
 - Pulled RFP CoPilot's actual source (not screenshots) and matched it directly: Nunito

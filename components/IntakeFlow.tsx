@@ -114,8 +114,8 @@ export default function IntakeFlow({
     <div className="space-y-6">
       <div>
         {mode === "rep" && (
-          <Link href="/dashboard" className="text-sm text-ink-400 hover:text-ink-800">
-            ← All customers
+          <Link href="/projects" className="text-sm text-ink-400 hover:text-ink-800">
+            ← All projects
           </Link>
         )}
         <h1 className="mt-1 text-lg font-semibold text-ink-800">{customerName}</h1>
@@ -175,7 +175,7 @@ export default function IntakeFlow({
               {personalize(currentArea.agentIntro, customerName)}
             </div>
             <div className="space-y-5 rounded-lg border border-ink-100 bg-surface p-5">
-              <h2 className="text-sm font-semibold text-ink-800">{currentArea.title}</h2>
+              <h2 className="field-title text-sm">{currentArea.title}</h2>
               {currentArea.fields.map((field) => {
                 const dynamicOptions = field.optionsFromField
                   ? (answers[field.optionsFromField.areaId]?.[field.optionsFromField.fieldId] as

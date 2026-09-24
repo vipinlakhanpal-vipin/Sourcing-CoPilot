@@ -30,7 +30,11 @@ try {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${nunito.variable} ${plexMono.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${nunito.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         <Script id="theme-init" strategy="beforeInteractive">
           {THEME_INIT_SCRIPT}

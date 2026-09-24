@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import NewCustomerForm from "@/components/NewCustomerForm";
 import PageBanner from "@/components/PageBanner";
 import KpiTile from "@/components/KpiTile";
 
@@ -39,42 +38,25 @@ export default async function DashboardPage() {
       />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <KpiTile label="Total customers" value={customers?.length ?? 0} tone="brand" />
+        <KpiTile label="Total projects" value={customers?.length ?? 0} tone="brand" />
         <KpiTile label="Intakes in progress" value={inProgressCount ?? 0} tone="warn" />
         <KpiTile label="Packages generated" value={packageCount ?? 0} tone="good" />
       </div>
 
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-lg font-semibold text-ink-800">Customers</h2>
-        <NewCustomerForm />
-      </div>
-
-      {(!customers || customers.length === 0) && (
-        <div className="rounded-lg border border-dashed border-ink-200 bg-surface p-8 text-center text-sm text-ink-400">
-          No customers yet. Create one to start an intake.
+      <div className="flex items-center justify-between rounded-lg border border-ink-100 bg-surface p-5">
+        <div>
+          <h2 className="font-display text-base text-ink-800">Projects</h2>
+          <p className="mt-0.5 text-sm text-ink-400">
+            Every customer or opportunity you&apos;re scoping — view, continue, or start a new one.
+          </p>
         </div>
-      )}
-
-      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface shadow-sm">
-        {customers?.map((customer) => (
-          <li key={customer.id}>
-            <Link
-              href={`/customers/${customer.id}`}
-              className="flex items-center justify-between px-4 py-3.5 transition-colors hover:bg-ink-50"
-            >
-              <div>
-                <p className="text-sm font-medium text-ink-800">{customer.name}</p>
-                <p className="text-xs text-ink-400">
-                  Updated {new Date(customer.updated_at).toLocaleDateString()}
-                </p>
-              </div>
-              <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium capitalize text-brand-700">
-                {customer.status}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <Link
+          href="/projects"
+          className="shrink-0 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+        >
+          View projects
+        </Link>
+      </div>
     </div>
   );
 }

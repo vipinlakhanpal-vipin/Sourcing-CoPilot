@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { href: "/guide", label: "Guide" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/settings", label: "Settings" },
+  { href: "/guide", label: "Guide", match: ["/guide"] },
+  { href: "/dashboard", label: "Dashboard", match: ["/dashboard"] },
+  { href: "/projects", label: "Projects", match: ["/projects", "/customers", "/intake"] },
+  { href: "/settings", label: "Settings", match: ["/settings"] },
 ];
 
 export default function NavTabs() {
@@ -15,7 +16,7 @@ export default function NavTabs() {
   return (
     <nav className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 min-w-0">
       {TABS.map((tab) => {
-        const active = pathname === tab.href || pathname?.startsWith(`${tab.href}/`);
+        const active = tab.match.some((p) => pathname === p || pathname?.startsWith(`${p}/`));
         return (
           <Link
             key={tab.href}

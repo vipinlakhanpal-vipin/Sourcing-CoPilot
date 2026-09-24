@@ -52,7 +52,7 @@ export default function GuidePage() {
         <h2 className="text-base font-semibold text-ink-800">Running an intake</h2>
         <ol className="list-decimal space-y-2 pl-5 text-sm text-ink-500">
           <li>
-            From the <Link href="/dashboard" className="underline">dashboard</Link>, click{" "}
+            From <Link href="/projects" className="underline">Projects</Link>, click{" "}
             <strong>New customer / opportunity</strong> and name it. You land on that
             customer&apos;s page with two ways to run the intake:
             <strong> Continue intake</strong> to walk the customer through it yourself, or{" "}

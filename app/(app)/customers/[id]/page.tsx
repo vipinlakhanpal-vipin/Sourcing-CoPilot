@@ -33,8 +33,8 @@ export default async function CustomerDetailPage({
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/dashboard" className="text-sm text-ink-400 hover:text-ink-800">
-          ← All customers
+        <Link href="/projects" className="text-sm text-ink-400 hover:text-ink-800">
+          ← All projects
         </Link>
         <h1 className="mt-1 text-lg font-semibold text-ink-800">{customer.name}</h1>
         {customer.notes && <p className="mt-1 text-sm text-ink-400">{customer.notes}</p>}

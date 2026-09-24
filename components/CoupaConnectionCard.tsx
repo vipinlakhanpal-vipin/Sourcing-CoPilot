@@ -110,7 +110,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
   return (
     <div className="rounded-lg border border-ink-100 bg-surface p-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-ink-800">Coupa Test connection</h2>
+        <h2 className="field-title text-sm">Coupa Test connection</h2>
         {connection && !editing && (
           <button onClick={() => setEditing(true)} className="text-xs font-medium text-ink-400 hover:text-ink-800">
             Edit
@@ -156,7 +156,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
               value={instanceBaseUrl}
               onChange={(e) => setInstanceBaseUrl(e.target.value)}
               placeholder="https://customername-test.coupahost.com"
-              className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+              className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -165,7 +165,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
               required
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
-              className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+              className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -176,7 +176,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
               value={clientSecret}
               onChange={(e) => setClientSecret(e.target.value)}
               placeholder={connection ? "Leave blank to keep the saved secret" : ""}
-              className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+              className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -185,7 +185,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
               value={scope}
               onChange={(e) => setScope(e.target.value)}
               placeholder="As configured on the OAuth2 client in Coupa Setup"
-              className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+              className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
             />
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}

@@ -52,7 +52,7 @@ export default function NewCustomerForm() {
           autoFocus
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
         />
       </div>
       <div>
@@ -61,7 +61,7 @@ export default function NewCustomerForm() {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
-          className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="field-fill mt-1 w-full rounded-md px-3 py-2 text-sm"
         />
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}

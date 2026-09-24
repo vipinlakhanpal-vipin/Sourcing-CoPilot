@@ -264,3 +264,36 @@ body {
 .invite-field-fill::placeholder {
   color: rgba(255, 255, 255, 0.7);
 }
+
+/* Filled-color data-entry fields — every text/textarea/select where a
+   customer's answer actually goes, across the Coupa connection form and
+   the 14 intake areas. Fixed navy in both themes (like .invite-field-fill
+   above), so a field is unmistakably "where you type" rather than a plain
+   white box. */
+.field-fill {
+  background-color: #1f3864;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.field-fill::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.field-fill:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #2fb8a6;
+}
+.field-fill:disabled {
+  opacity: 0.6;
+}
+
+/* Filled section/question titles — a solid teal pill, same treatment as
+   Admin Console's "Invite a team member" heading, reused everywhere a
+   title needs to read as more than plain navy text. */
+.field-title {
+  display: inline-block;
+  border-radius: 0.5rem;
+  background-color: var(--color-brand-500);
+  color: #ffffff;
+  padding: 0.3rem 0.75rem;
+  font-weight: 700;
+}
