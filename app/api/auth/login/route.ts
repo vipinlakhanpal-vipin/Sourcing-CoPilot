@@ -34,5 +34,17 @@ export async function POST(request: NextRequest) {
   const token = await createSessionToken({ userId: user.id, email: user.email });
   await setSessionCookie(token);
 
+  // Vercel injects these headers at the edge; both are absent in local dev.
+  const city = request.headers.get("x-vercel-ip-city");
+  const country = request.headers.get("x-vercel-ip-country");
+  await supabaseAdmin
+    .from("users")
+    .update({
+      last_login_at: new Date().toISOString(),
+      last_login_city: city ? decodeURIComponent(city) : null,
+      last_login_country: country,
+    })
+    .eq("id", user.id);
+
   return NextResponse.json({ ok: true });
 }

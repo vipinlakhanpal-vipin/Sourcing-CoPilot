@@ -108,7 +108,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
   const showForm = editing || connection === null;
 
   return (
-    <div className="rounded-lg border border-ink-100 bg-white p-5">
+    <div className="rounded-lg border border-ink-100 bg-surface p-5">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-ink-800">Coupa Test connection</h2>
         {connection && !editing && (
@@ -135,7 +135,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
           <button
             onClick={handleTest}
             disabled={testing}
-            className="mt-2 rounded-md border border-ink-200 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50 disabled:opacity-60"
+            className="mt-2 rounded-md border border-ink-200 bg-surface px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50 disabled:opacity-60"
           >
             {testing ? "Testing…" : "Test connection"}
           </button>

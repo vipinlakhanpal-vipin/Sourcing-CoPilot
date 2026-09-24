@@ -1,8 +1,8 @@
 const TONE_CLASSES: Record<string, string> = {
   brand: "bg-brand-50 text-brand-700",
-  warn: "bg-amber-50 text-amber-700",
-  good: "bg-emerald-50 text-emerald-700",
-  bad: "bg-red-50 text-red-700",
+  warn: "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+  good: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+  bad: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
   neutral: "bg-ink-50 text-ink-700",
 };
 

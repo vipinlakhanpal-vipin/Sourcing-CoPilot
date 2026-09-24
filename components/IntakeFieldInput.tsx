@@ -40,7 +40,7 @@ function Chips({
             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
               isSelected
                 ? "border-brand-600 bg-brand-600 text-white"
-                : "border-ink-200 bg-white text-ink-500 hover:border-brand-300"
+                : "border-ink-200 bg-surface text-ink-500 hover:border-brand-300"
             }`}
           >
             {option}
@@ -112,19 +112,19 @@ function RosterInput({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
-          className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         />
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           type="email"
-          className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         />
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         >
           {ROSTER_ROLE_OPTIONS.map((r) => (
             <option key={r} value={r}>
@@ -136,7 +136,7 @@ function RosterInput({
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="Scope / threshold (optional)"
-          className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         />
         <button
           type="button"
@@ -214,7 +214,7 @@ function CategoryRulesInput({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+            className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
           >
             <option value="">Category…</option>
             {categoryOptions.map((c) => (
@@ -227,7 +227,7 @@ function CategoryRulesInput({
             value={threshold}
             onChange={(e) => setThreshold(e.target.value)}
             placeholder="Spend threshold (e.g. >$500k)"
-            className="rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+            className="rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
           />
         </div>
         <div>
@@ -243,7 +243,7 @@ function CategoryRulesInput({
         <select
           value={rigor}
           onChange={(e) => setRigor(e.target.value)}
-          className="w-full rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="w-full rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
         >
           {EVENT_RIGOR_OPTIONS.map((r) => (
             <option key={r} value={r}>
@@ -354,7 +354,7 @@ export default function IntakeFieldInput({ field, value, onChange, uploadUrl }: 
       <select
         value={typeof value === "string" ? value : ""}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-ink-200 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+        className="w-full rounded-md border border-ink-200 bg-surface px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
       >
         <option value="" disabled>
           Select one…

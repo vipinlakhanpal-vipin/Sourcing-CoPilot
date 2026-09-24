@@ -35,7 +35,7 @@ export default function SignupPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-ink-100 bg-white p-6 shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-ink-100 bg-surface p-6 shadow-sm">
       <div>
         <label className="block text-sm font-medium text-ink-700">Name</label>
         <input

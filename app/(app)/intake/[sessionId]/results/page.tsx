@@ -85,7 +85,7 @@ export default async function ResultsPage({
           />
           <Link
             href={`/intake/${sessionId}`}
-            className="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50"
+            className="rounded-md border border-ink-200 bg-surface px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50"
           >
             Edit answers
           </Link>
@@ -93,7 +93,7 @@ export default async function ResultsPage({
       </div>
 
       {flags.length > 0 && (
-        <div className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <div className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950">
           <h2 className="text-sm font-semibold text-amber-900">Flagged for review</h2>
           <ul className="space-y-1.5">
             {flags.map((flag, i) => (
@@ -106,7 +106,7 @@ export default async function ResultsPage({
       )}
 
       {uploadsWithUrls.length > 0 && (
-        <div className="space-y-2 rounded-lg border border-ink-100 bg-white p-4">
+        <div className="space-y-2 rounded-lg border border-ink-100 bg-surface p-4">
           <h2 className="text-sm font-semibold text-ink-800">Master data files</h2>
           <ul className="divide-y divide-ink-100">
             {uploadsWithUrls.map((u) => (
@@ -130,7 +130,7 @@ export default async function ResultsPage({
         </div>
       )}
 
-      <div className="rounded-lg border border-ink-100 bg-white p-6">
+      <div className="rounded-lg border border-ink-100 bg-surface p-6">
         <article className="prose prose-sm prose-slate max-w-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{configPackage.summary_markdown}</ReactMarkdown>
         </article>

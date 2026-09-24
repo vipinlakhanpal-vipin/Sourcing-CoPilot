@@ -44,7 +44,7 @@ export default function NewCustomerForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 rounded-lg border border-ink-100 bg-white p-4 shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-3 rounded-lg border border-ink-100 bg-surface p-4 shadow-sm">
       <div>
         <label className="block text-sm font-medium text-ink-700">Customer / opportunity name</label>
         <input

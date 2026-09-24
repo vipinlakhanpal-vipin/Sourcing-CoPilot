@@ -13,7 +13,10 @@ create table if not exists users (
   email text not null unique,
   password_hash text not null,
   name text,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  last_login_at timestamptz,
+  last_login_city text,
+  last_login_country text
 );
 
 -- ---------------------------------------------------------------------------

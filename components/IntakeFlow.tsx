@@ -123,7 +123,7 @@ export default function IntakeFlow({
       </div>
 
       {mode === "rep" && status === "completed" && resultsHref && (
-        <div className="flex items-center justify-between rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
+        <div className="flex items-center justify-between rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
           <span>This intake is complete. Editing an answer here does not regenerate the config package.</span>
           <Link href={resultsHref} className="font-medium underline">
             View package
@@ -135,7 +135,7 @@ export default function IntakeFlow({
         <div className="flex items-center gap-1.5 px-1 pb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-400">
           Process
         </div>
-        <div className="flex gap-1 overflow-x-auto border-b border-ink-100 pb-px">
+        <div className="strip-carbon flex gap-1 overflow-x-auto rounded-lg border border-[color:var(--color-strip-border)] p-1.5">
           {areas.map((area, i) => {
             const complete = isAreaComplete(area, answers);
             const active = i === stepIndex;
@@ -144,10 +144,10 @@ export default function IntakeFlow({
                 key={area.id}
                 onClick={() => goToStep(i)}
                 title={area.title}
-                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                   active
-                    ? "border-brand-600 text-ink-800"
-                    : "border-transparent text-ink-400 hover:text-ink-700"
+                    ? "bg-brand-500 text-[color:var(--color-strip-accent-foreground)]"
+                    : "text-[color:var(--color-strip-muted)] hover:text-[color:var(--color-strip-foreground)]"
                 }`}
               >
                 <span
@@ -155,8 +155,8 @@ export default function IntakeFlow({
                     complete
                       ? "bg-emerald-500 text-white"
                       : active
-                        ? "bg-brand-600 text-white"
-                        : "bg-ink-100 text-ink-500"
+                        ? "bg-[color:var(--color-strip-accent-foreground)] text-brand-500"
+                        : "bg-white/10 text-[color:var(--color-strip-muted)]"
                   }`}
                 >
                   {complete ? "✓" : i + 1}
@@ -174,7 +174,7 @@ export default function IntakeFlow({
             <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
               {personalize(currentArea.agentIntro, customerName)}
             </div>
-            <div className="space-y-5 rounded-lg border border-ink-100 bg-white p-5">
+            <div className="space-y-5 rounded-lg border border-ink-100 bg-surface p-5">
               <h2 className="text-sm font-semibold text-ink-800">{currentArea.title}</h2>
               {currentArea.fields.map((field) => {
                 const dynamicOptions = field.optionsFromField
@@ -234,7 +234,7 @@ export default function IntakeFlow({
             <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
               That&apos;s everything. Ready to generate the configuration package?
             </div>
-            <div className="rounded-lg border border-ink-100 bg-white p-5">
+            <div className="rounded-lg border border-ink-100 bg-surface p-5">
               <ul className="mb-4 grid gap-1.5 sm:grid-cols-2">
                 {areas.map((area, i) => {
                   const complete = isAreaComplete(area, answers);
@@ -246,7 +246,7 @@ export default function IntakeFlow({
                       >
                         <span
                           className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${
-                            complete ? "bg-emerald-500 text-white" : "bg-amber-100 text-amber-700"
+                            complete ? "bg-emerald-500 text-white" : "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
                           }`}
                         >
                           {complete ? "✓" : "!"}
@@ -287,7 +287,7 @@ export default function IntakeFlow({
             <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
               That&apos;s everything — thank you.
             </div>
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               {allComplete ? (
                 <p>
                   Your answers have been submitted. Our team will review them and follow up with
@@ -300,7 +300,7 @@ export default function IntakeFlow({
               )}
               <button
                 onClick={() => goToStep(areas.length - 1)}
-                className="mt-3 rounded-md border border-ink-200 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50"
+                className="mt-3 rounded-md border border-ink-200 bg-surface px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50"
               >
                 Back to last section
               </button>

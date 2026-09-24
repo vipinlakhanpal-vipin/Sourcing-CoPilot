@@ -6,6 +6,14 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.4 — 2026-09-24
+Primary nav, profile menu, account settings, and full dark-mode support.
+- "Dashboard" was only reachable via the brand-name link, making it read as the app's implicit home rather than one section among several. Added an explicit tab strip (Guide, Dashboard, Settings) with active-state highlighting so Dashboard sits alongside the others as an equal, not the default the whole app centers on.
+- Replaced the raw email address in the header with a profile menu: an avatar showing initials, opening on click to show name, email, and the city/country the account last signed in from (captured server-side from Vercel's geo headers at login/signup), plus sign-out.
+- Added a real Settings page (name, email, member-since, last-signed-in-from) as the foundation for Team/roles once that scope is settled.
+- Added full light/dark mode: every color in the app now resolves through theme tokens that redefine themselves under `prefers-color-scheme: dark` (or an explicit override), so text and surfaces stay correctly legible switching either direction — no separate dark build, no washed-out or invisible text.
+- Gave the top nav and the intake "Process" tab strip a dark, graphite ("carbon fibre") filled treatment with the active tab/step picked out in solid brass — a fixed, premium accent bar that reads the same in both themes, rather than a plain strip that recolors with the page.
+
 ## v1.3 — 2026-09-23
 Visual identity, tabbed navigation, structured pick-lists, personalization.
 - New ledger-navy/brass visual identity applied across the whole app: Fraunces display type + IBM Plex Sans/Mono, a brand color scale replacing the plain black/slate palette, a logo mark, and a diagonal-textured page banner

@@ -29,9 +29,19 @@ export async function POST(request: NextRequest) {
 
   const passwordHash = await hashPassword(password);
 
+  const city = request.headers.get("x-vercel-ip-city");
+  const country = request.headers.get("x-vercel-ip-country");
+
   const { data: user, error } = await supabaseAdmin
     .from("users")
-    .insert({ name, email, password_hash: passwordHash })
+    .insert({
+      name,
+      email,
+      password_hash: passwordHash,
+      last_login_at: new Date().toISOString(),
+      last_login_city: city ? decodeURIComponent(city) : null,
+      last_login_country: country,
+    })
     .select("id, email")
     .single();
 

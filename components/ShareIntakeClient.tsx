@@ -58,7 +58,7 @@ export default function ShareIntakeClient({
             10–15 minutes — you can leave and come back any time using this same link.
           </p>
         </div>
-        <form onSubmit={handleStart} className="space-y-4 rounded-lg border border-ink-100 bg-white p-5">
+        <form onSubmit={handleStart} className="space-y-4 rounded-lg border border-ink-100 bg-surface p-5">
           <div>
             <label className="block text-sm font-medium text-ink-700">Your name</label>
             <input

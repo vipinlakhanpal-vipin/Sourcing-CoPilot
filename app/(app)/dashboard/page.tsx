@@ -50,12 +50,12 @@ export default async function DashboardPage() {
       </div>
 
       {(!customers || customers.length === 0) && (
-        <div className="rounded-lg border border-dashed border-ink-200 bg-white p-8 text-center text-sm text-ink-400">
+        <div className="rounded-lg border border-dashed border-ink-200 bg-surface p-8 text-center text-sm text-ink-400">
           No customers yet. Create one to start an intake.
         </div>
       )}
 
-      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-white shadow-sm">
+      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface shadow-sm">
         {customers?.map((customer) => (
           <li key={customer.id}>
             <Link

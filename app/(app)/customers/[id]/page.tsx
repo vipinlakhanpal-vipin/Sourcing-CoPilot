@@ -45,7 +45,7 @@ export default async function CustomerDetailPage({
         <StartIntakeButton customerId={customer.id} />
       </div>
 
-      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-white">
+      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface">
         {intakeSessions?.map((s) => (
           <li key={s.id} className="flex items-center justify-between px-4 py-3">
             <div>
