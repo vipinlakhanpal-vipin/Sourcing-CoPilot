@@ -32,12 +32,19 @@ export async function POST(request: NextRequest) {
   const city = request.headers.get("x-vercel-ip-city");
   const country = request.headers.get("x-vercel-ip-country");
 
+  const { data: invitation } = await supabaseAdmin
+    .from("invitations")
+    .select("role")
+    .eq("email", email)
+    .maybeSingle();
+
   const { data: user, error } = await supabaseAdmin
     .from("users")
     .insert({
       name,
       email,
       password_hash: passwordHash,
+      role: invitation?.role ?? "standard",
       last_login_at: new Date().toISOString(),
       last_login_city: city ? decodeURIComponent(city) : null,
       last_login_country: country,
@@ -47,6 +54,10 @@ export async function POST(request: NextRequest) {
 
   if (error || !user) {
     return NextResponse.json({ error: "Could not create account" }, { status: 500 });
+  }
+
+  if (invitation) {
+    await supabaseAdmin.from("invitations").delete().eq("email", email);
   }
 
   const token = await createSessionToken({ userId: user.id, email: user.email });

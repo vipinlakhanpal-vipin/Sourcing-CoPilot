@@ -6,6 +6,26 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.5 — 2026-09-24
+Visual identity rebuilt to match RFP CoPilot; real Admin Console under Settings.
+- Pulled RFP CoPilot's actual source (not screenshots) and matched it directly: Nunito
+  replaces the Fraunces/IBM Plex pairing app-wide; the brass/ledger-navy palette is replaced
+  with RFP CoPilot's own navy (#1F3864) + teal (#2FB8A6); the nav bar and every page banner now
+  use the same dark "carbon-navy" weave-and-glow treatment (glass pill tabs, gradient active
+  state, breathing glow, hover sheen) as RFP CoPilot's header and hero cards.
+- Added a real light/dark mode toggle (sun/moon button in the nav) instead of only following
+  the OS preference — same mechanism as RFP CoPilot's Settings -> Appearance, applied instantly
+  and persisted per-browser.
+- Settings is now pill sub-tabs — Account, Appearance, and (admin only) Admin Console — matching
+  RFP CoPilot's exact pattern instead of a single static page.
+- Admin Console is real, working functionality: two roles (Standard/Admin), a users table with
+  role/join-date/last-signed-in/location and per-row role changes and delete, and an invite flow
+  that records a pending invitation and hands back a copy-paste message (applied automatically
+  as soon as that email signs up) — no email service is wired up yet, matching how RFP CoPilot's
+  own invite flow works today.
+- Needs one migration before Admin Console is usable — see the handoff message for the exact SQL,
+  including the one-line update to make your own account an Admin.
+
 ## v1.4 — 2026-09-24
 Primary nav, profile menu, account settings, and full dark-mode support.
 - "Dashboard" was only reachable via the brand-name link, making it read as the app's implicit home rather than one section among several. Added an explicit tab strip (Guide, Dashboard, Settings) with active-state highlighting so Dashboard sits alongside the others as an equal, not the default the whole app centers on.

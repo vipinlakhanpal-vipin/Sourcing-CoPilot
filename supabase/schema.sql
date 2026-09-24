@@ -13,10 +13,24 @@ create table if not exists users (
   email text not null unique,
   password_hash text not null,
   name text,
+  role text not null default 'standard' check (role in ('standard', 'admin')),
   created_at timestamptz not null default now(),
   last_login_at timestamptz,
   last_login_city text,
   last_login_country text
+);
+
+-- ---------------------------------------------------------------------------
+-- invitations: a pending role granted by email, applied automatically at
+-- signup (app/api/auth/signup/route.ts). Admin-only, via Settings -> Admin
+-- Console.
+-- ---------------------------------------------------------------------------
+create table if not exists invitations (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null unique,
+  role text not null default 'standard' check (role in ('standard', 'admin')),
+  created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -153,3 +167,4 @@ alter table intake_sessions enable row level security;
 alter table config_packages enable row level security;
 alter table coupa_connections enable row level security;
 alter table intake_uploads enable row level security;
+alter table invitations enable row level security;
