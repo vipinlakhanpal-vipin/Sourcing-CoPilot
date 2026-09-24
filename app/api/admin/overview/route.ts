@@ -8,7 +8,9 @@ export async function GET() {
 
   const { data: users, error } = await supabaseAdmin
     .from("users")
-    .select("id, name, email, role, created_at, last_login_at, last_login_city, last_login_country")
+    .select(
+      "id, name, email, role, custom_role_id, created_at, last_login_at, last_login_city, last_login_country, custom_roles(name)"
+    )
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -16,11 +18,17 @@ export async function GET() {
   }
 
   const totalAdmin = users.filter((u) => u.role === "admin").length;
+  const totalSuperAdmin = users.filter((u) => u.role === "super_admin").length;
 
   return NextResponse.json({
     totalUsers: users.length,
-    totalStandard: users.length - totalAdmin,
+    totalStandard: users.length - totalAdmin - totalSuperAdmin,
     totalAdmin,
-    users,
+    totalSuperAdmin,
+    users: users.map((u) => ({
+      ...u,
+      custom_role_name: (u.custom_roles as unknown as { name: string } | null)?.name ?? null,
+      custom_roles: undefined,
+    })),
   });
 }

@@ -13,7 +13,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data: user } = session
     ? await supabaseAdmin
         .from("users")
-        .select("name, role, last_login_city, last_login_country")
+        .select("name, role, location, created_at, last_login_city, last_login_country")
         .eq("id", session.userId)
         .maybeSingle()
     : { data: null };
@@ -45,6 +45,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               name={user?.name ?? null}
               email={session.email}
               role={user?.role ?? "standard"}
+              location={user?.location ?? null}
+              createdAt={user?.created_at ?? null}
               lastLoginCity={user?.last_login_city ?? null}
               lastLoginCountry={user?.last_login_country ?? null}
             />

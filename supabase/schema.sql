@@ -8,12 +8,26 @@ create extension if not exists "pgcrypto";
 -- ---------------------------------------------------------------------------
 -- users: self-service email+password auth, not Supabase Auth
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+-- custom_roles: admin-defined consultant/discipline labels (e.g. "Coupa
+-- Functional Consultant") — distinct from `users.role`, which is the
+-- standard/admin/super_admin permission tier. Super Admin only, via
+-- Settings -> Roles.
+-- ---------------------------------------------------------------------------
+create table if not exists custom_roles (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),
   email text not null unique,
   password_hash text not null,
   name text,
-  role text not null default 'standard' check (role in ('standard', 'admin')),
+  role text not null default 'standard' check (role in ('standard', 'admin', 'super_admin')),
+  custom_role_id uuid references custom_roles(id) on delete set null,
+  location text,
   created_at timestamptz not null default now(),
   last_login_at timestamptz,
   last_login_city text,
@@ -29,7 +43,7 @@ create table if not exists invitations (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   email text not null unique,
-  role text not null default 'standard' check (role in ('standard', 'admin')),
+  role text not null default 'standard' check (role in ('standard', 'admin', 'super_admin')),
   created_at timestamptz not null default now()
 );
 
@@ -41,7 +55,7 @@ create table if not exists customers (
   owner_id uuid not null references users(id) on delete cascade,
   name text not null,
   notes text,
-  status text not null default 'active' check (status in ('active', 'archived')),
+  status text not null default 'active' check (status in ('active', 'inactive', 'pending')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -168,3 +182,4 @@ alter table config_packages enable row level security;
 alter table coupa_connections enable row level security;
 alter table intake_uploads enable row level security;
 alter table invitations enable row level security;
+alter table custom_roles enable row level security;

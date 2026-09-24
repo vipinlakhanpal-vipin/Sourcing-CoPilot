@@ -2,9 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import StartIntakeButton from "@/components/StartIntakeButton";
-import CopyShareLinkButton from "@/components/CopyShareLinkButton";
-import CoupaConnectionCard from "@/components/CoupaConnectionCard";
+import ProjectDetailTabs from "@/components/ProjectDetailTabs";
 
 export default async function CustomerDetailPage({
   params,
@@ -24,11 +22,27 @@ export default async function CustomerDetailPage({
 
   if (!customer) notFound();
 
-  const { data: intakeSessions } = await supabaseAdmin
-    .from("intake_sessions")
-    .select("id, status, current_step, created_at, completed_at, share_token, respondent_name")
-    .eq("customer_id", id)
-    .order("created_at", { ascending: false });
+  const [{ data: intakeSessions }, { data: connections }] = await Promise.all([
+    supabaseAdmin
+      .from("intake_sessions")
+      .select("id, status, current_step, created_at, completed_at, share_token, respondent_name")
+      .eq("customer_id", id)
+      .order("created_at", { ascending: false }),
+    supabaseAdmin
+      .from("coupa_connections")
+      .select("instance_hostname, client_id, last_tested_at")
+      .eq("customer_id", id)
+      .eq("environment", "test")
+      .maybeSingle(),
+  ]);
+
+  const connection = connections
+    ? {
+        instanceBaseUrl: connections.instance_hostname,
+        clientId: connections.client_id,
+        lastTestedAt: connections.last_tested_at,
+      }
+    : null;
 
   return (
     <div className="space-y-6">
@@ -40,45 +54,7 @@ export default async function CustomerDetailPage({
         {customer.notes && <p className="mt-1 text-sm text-ink-400">{customer.notes}</p>}
       </div>
 
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-ink-700">Intake sessions</h2>
-        <StartIntakeButton customerId={customer.id} />
-      </div>
-
-      <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface">
-        {intakeSessions?.map((s) => (
-          <li key={s.id} className="flex items-center justify-between px-4 py-3">
-            <div>
-              <p className="text-sm font-medium text-ink-800">
-                Started {new Date(s.created_at).toLocaleDateString()}
-              </p>
-              <p className="text-xs text-ink-400 capitalize">
-                {s.status.replace("_", " ")}
-                {s.respondent_name && ` · filled in by ${s.respondent_name}`}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              {s.status !== "completed" && <CopyShareLinkButton token={s.share_token} />}
-              {s.status === "completed" ? (
-                <>
-                  <Link href={`/intake/${s.id}/results`} className="text-sm font-medium text-ink-800 underline">
-                    View config package
-                  </Link>
-                  <Link href={`/intake/${s.id}`} className="text-sm text-ink-400 hover:text-ink-800">
-                    Edit answers
-                  </Link>
-                </>
-              ) : (
-                <Link href={`/intake/${s.id}`} className="text-sm font-medium text-ink-800 underline">
-                  Continue intake
-                </Link>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <CoupaConnectionCard customerId={customer.id} />
+      <ProjectDetailTabs customerId={customer.id} intakeSessions={intakeSessions ?? []} connection={connection} />
     </div>
   );
 }

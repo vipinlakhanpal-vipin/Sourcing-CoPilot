@@ -203,8 +203,8 @@ body {
   animation: nav-pill-breathe 2.6s ease-in-out infinite;
 }
 
-/* Role pill — Admin Console / profile menu. Two tiers: slate Standard,
-   blue Admin. */
+/* Role pill — Admin Console / profile menu. Three tiers: slate Standard,
+   blue Admin, amber Super Admin. */
 .role-badge {
   display: inline-block;
   padding: 2px 8px;
@@ -219,6 +219,10 @@ body {
   background-color: #dbeafe;
   color: #1e40af;
 }
+.role-badge--super {
+  background-color: #fffbeb;
+  color: #92400e;
+}
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .role-badge {
     background-color: #263244;
@@ -228,6 +232,10 @@ body {
     background-color: rgba(59, 130, 246, 0.18);
     color: #93c5fd;
   }
+  :root:not([data-theme="light"]) .role-badge--super {
+    background-color: rgba(217, 119, 6, 0.18);
+    color: #fbbf24;
+  }
 }
 :root[data-theme="dark"] .role-badge {
   background-color: #263244;
@@ -236,6 +244,10 @@ body {
 :root[data-theme="dark"] .role-badge--admin {
   background-color: rgba(59, 130, 246, 0.18);
   color: #93c5fd;
+}
+:root[data-theme="dark"] .role-badge--super {
+  background-color: rgba(217, 119, 6, 0.18);
+  color: #fbbf24;
 }
 
 /* Admin Console invite form — filled-color Role select (swaps color with
@@ -255,6 +267,9 @@ body {
 }
 .role-select-fill--admin {
   background-color: #2563eb;
+}
+.role-select-fill--super_admin {
+  background-color: #d97706;
 }
 .invite-field-fill {
   background-color: #64748b;
@@ -296,4 +311,161 @@ body {
   color: #ffffff;
   padding: 0.3rem 0.75rem;
   font-weight: 700;
+}
+
+/* Project status pill — Projects list. */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.status-pill--active {
+  background-color: var(--color-brand-50);
+  color: var(--color-brand-700);
+}
+.status-pill--pending {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+.status-pill--inactive {
+  background-color: var(--color-ink-50);
+  color: var(--color-ink-400);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .status-pill--pending {
+    background-color: #2a2008;
+    color: #fbbf24;
+  }
+}
+:root[data-theme="dark"] .status-pill--pending {
+  background-color: #2a2008;
+  color: #fbbf24;
+}
+
+/* Filled colored icon-buttons — Projects list row actions. */
+.icon-btn {
+  display: inline-flex;
+  height: 1.875rem;
+  width: 1.875rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  transition: filter 0.15s;
+}
+.icon-btn:hover {
+  filter: brightness(1.1);
+}
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.icon-btn--view {
+  background-color: var(--color-brand-500);
+}
+.icon-btn--edit {
+  background-color: #6366f1;
+}
+.icon-btn--delete {
+  background-color: #e11d48;
+}
+
+/* Project detail page — Coupa's own two-tier tab pattern: filled pill for
+   the active primary tab, a rule line, then sub-tabs with a colored
+   underline on the active one. */
+.primary-tab {
+  border-radius: 0.625rem 0.625rem 0 0;
+  padding: 0.5rem 0.875rem;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-ink-500);
+}
+.primary-tab--active {
+  background-color: var(--color-ink-800);
+  color: #ffffff;
+}
+.primary-tab-divider {
+  height: 2px;
+  background-color: var(--color-ink-800);
+}
+.sub-tab {
+  padding-bottom: 0.625rem;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink-400);
+  border-bottom: 3px solid transparent;
+}
+.sub-tab--active {
+  color: var(--color-ink-800);
+  border-bottom-color: var(--color-brand-500);
+}
+
+/* Project detail Overview panels — carbon-navy for Intake Session, teal for
+   Coupa Connection, so the two read as clearly different surfaces. */
+.panel-head {
+  padding: 0.75rem 1rem;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.panel-head--teal {
+  background-color: var(--color-brand-500);
+}
+
+/* Intake left-rail nav — all 14 steps always visible, carbon-navy like
+   every other strip in the app. */
+.side-rail {
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
+}
+.side-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-strip-muted);
+  margin-bottom: 2px;
+}
+.side-item:hover {
+  color: var(--color-strip-foreground);
+}
+.side-item .side-num {
+  display: flex;
+  height: 1.25rem;
+  width: 1.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+.side-item--done {
+  color: var(--color-strip-foreground);
+}
+.side-item--done .side-num {
+  background-color: #10b981;
+}
+.side-item--active {
+  color: var(--color-strip-accent-foreground);
+  background-color: var(--color-brand-500);
+}
+.side-item--active .side-num {
+  background-color: #ffffff;
+  color: var(--color-brand-700);
 }

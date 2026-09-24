@@ -3,20 +3,33 @@
 import { useEffect, useState } from "react";
 import { getStoredMode, setStoredMode, ThemeMode } from "@/lib/theme";
 import AdminConsole from "./AdminConsole";
+import RolesManager from "./RolesManager";
 
 interface AccountInfo {
   name: string | null;
   email: string;
-  role: string;
+  role: "standard" | "admin" | "super_admin";
   createdAt: string | null;
   lastLoginAt: string | null;
   location: string;
 }
 
+const ROLE_LABEL: Record<AccountInfo["role"], string> = {
+  standard: "Standard",
+  admin: "Admin",
+  super_admin: "Super Admin",
+};
+const ROLE_BADGE_CLASS: Record<AccountInfo["role"], string> = {
+  standard: "",
+  admin: "role-badge--admin",
+  super_admin: "role-badge--super",
+};
+
 const TABS = [
-  { key: "account", label: "Account", adminOnly: false },
-  { key: "appearance", label: "Appearance", adminOnly: false },
-  { key: "admin", label: "Admin Console", adminOnly: true },
+  { key: "account", label: "Account", visible: () => true },
+  { key: "appearance", label: "Appearance", visible: () => true },
+  { key: "admin", label: "Admin Console", visible: (r: AccountInfo["role"]) => r === "admin" || r === "super_admin" },
+  { key: "roles", label: "Roles", visible: (r: AccountInfo["role"]) => r === "super_admin" },
 ] as const;
 
 function AccountSection({ account }: { account: AccountInfo }) {
@@ -36,9 +49,7 @@ function AccountSection({ account }: { account: AccountInfo }) {
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Role</dt>
             <dd>
-              <span className={`role-badge ${account.role === "admin" ? "role-badge--admin" : ""}`}>
-                {account.role === "admin" ? "Admin" : "Standard"}
-              </span>
+              <span className={`role-badge ${ROLE_BADGE_CLASS[account.role]}`}>{ROLE_LABEL[account.role]}</span>
             </dd>
           </div>
           <div className="flex items-center justify-between">
@@ -55,6 +66,9 @@ function AccountSection({ account }: { account: AccountInfo }) {
             </dd>
           </div>
         </dl>
+        <p className="mt-3 text-xs text-ink-400">
+          Location and consultant type are set from the profile menu (top right) and Admin Console.
+        </p>
       </div>
     </section>
   );
@@ -105,8 +119,7 @@ function AppearanceSection() {
 
 export default function SettingsTabs({ account }: { account: AccountInfo }) {
   const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("account");
-  const isAdmin = account.role === "admin";
-  const tabs = TABS.filter((t) => !t.adminOnly || isAdmin);
+  const tabs = TABS.filter((t) => t.visible(account.role));
 
   return (
     <>
@@ -116,9 +129,7 @@ export default function SettingsTabs({ account }: { account: AccountInfo }) {
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-              tab === t.key
-                ? "bg-ink-800 text-white"
-                : "border border-ink-100 bg-surface text-ink-500 hover:bg-ink-50"
+              tab === t.key ? "bg-ink-800 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"
             }`}
           >
             {t.label}
@@ -128,7 +139,10 @@ export default function SettingsTabs({ account }: { account: AccountInfo }) {
 
       {tab === "account" && <AccountSection account={account} />}
       {tab === "appearance" && <AppearanceSection />}
-      {tab === "admin" && isAdmin && <AdminConsole myEmail={account.email} />}
+      {tab === "admin" && (account.role === "admin" || account.role === "super_admin") && (
+        <AdminConsole myEmail={account.email} myRole={account.role} />
+      )}
+      {tab === "roles" && account.role === "super_admin" && <RolesManager />}
     </>
   );
 }

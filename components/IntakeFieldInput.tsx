@@ -37,10 +37,8 @@ function Chips({
             key={option}
             type="button"
             onClick={() => onToggle(option)}
-            className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
-              isSelected
-                ? "border-brand-600 bg-brand-600 text-white"
-                : "border-ink-200 bg-surface text-ink-500 hover:border-brand-300"
+            className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+              isSelected ? "bg-brand-600 text-white" : "bg-ink-50 text-ink-500 hover:bg-ink-100"
             }`}
           >
             {option}

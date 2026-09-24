@@ -24,7 +24,7 @@ export default function StartIntakeButton({ customerId }: { customerId: string }
     <button
       onClick={handleClick}
       disabled={loading}
-      className="rounded-md border border-ink-200 bg-surface px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-ink-50 disabled:opacity-60"
+      className="rounded-md bg-ink-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-700 disabled:opacity-60"
     >
       {loading ? "Starting…" : "Start new intake session"}
     </button>

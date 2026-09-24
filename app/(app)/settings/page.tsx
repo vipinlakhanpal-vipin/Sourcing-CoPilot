@@ -13,7 +13,8 @@ export default async function SettingsPage() {
     .maybeSingle();
 
   const location = [user?.last_login_city, user?.last_login_country].filter(Boolean).join(", ");
-  const isAdmin = user?.role === "admin";
+  const role = (user?.role ?? "standard") as "standard" | "admin" | "super_admin";
+  const isAdmin = role === "admin" || role === "super_admin";
 
   return (
     <div className="space-y-6">
@@ -28,7 +29,7 @@ export default async function SettingsPage() {
         account={{
           name: user?.name ?? null,
           email: user?.email ?? session.email,
-          role: user?.role ?? "standard",
+          role,
           createdAt: user?.created_at ?? null,
           lastLoginAt: user?.last_login_at ?? null,
           location,

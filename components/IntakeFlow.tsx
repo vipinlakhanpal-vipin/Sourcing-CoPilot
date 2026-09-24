@@ -6,6 +6,11 @@ import Link from "next/link";
 import { FieldValue, IntakeArea, IntakeAnswers, isAreaComplete, personalize } from "@/lib/intake-schema";
 import IntakeFieldInput from "./IntakeFieldInput";
 
+// One solid accent per area so each step's intro message visibly stands
+// apart from the last as you move through the 14-step process, instead of
+// every step sharing the same flat gray bubble.
+const MESSAGE_HUES = ["#2fb8a6", "#6366f1", "#d97706", "#e11d48", "#7c3aed", "#0284c7", "#059669", "#c026d5"];
+
 interface Props {
   /** Base path for save/generate requests, e.g. `/api/intake/<id>` or `/api/share/<token>`. */
   apiBasePath: string;
@@ -131,11 +136,11 @@ export default function IntakeFlow({
         </div>
       )}
 
-      <div>
-        <div className="flex items-center gap-1.5 px-1 pb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-400">
-          Process
-        </div>
-        <div className="strip-carbon flex gap-1 overflow-x-auto rounded-lg border border-[color:var(--color-strip-border)] p-1.5">
+      <div className="grid gap-5 md:grid-cols-[240px_1fr]">
+        <nav className="side-rail strip-carbon md:sticky md:top-20 md:self-start">
+          <div className="px-2 pb-2 pt-1 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--color-strip-muted)]">
+            Process
+          </div>
           {areas.map((area, i) => {
             const complete = isAreaComplete(area, answers);
             const active = i === stepIndex;
@@ -144,34 +149,22 @@ export default function IntakeFlow({
                 key={area.id}
                 onClick={() => goToStep(i)}
                 title={area.title}
-                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                  active
-                    ? "bg-brand-500 text-[color:var(--color-strip-accent-foreground)]"
-                    : "text-[color:var(--color-strip-muted)] hover:text-[color:var(--color-strip-foreground)]"
-                }`}
+                className={`side-item ${active ? "side-item--active" : complete ? "side-item--done" : ""}`}
               >
-                <span
-                  className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-semibold ${
-                    complete
-                      ? "bg-emerald-500 text-white"
-                      : active
-                        ? "bg-[color:var(--color-strip-accent-foreground)] text-brand-500"
-                        : "bg-white/10 text-[color:var(--color-strip-muted)]"
-                  }`}
-                >
-                  {complete ? "✓" : i + 1}
-                </span>
-                {area.title}
+                <span className="side-num">{complete ? "✓" : i + 1}</span>
+                <span className="truncate">{area.title}</span>
               </button>
             );
           })}
-        </div>
-      </div>
+        </nav>
 
-      <div className="space-y-3">
+        <div className="space-y-3 min-w-0">
         {currentArea && (
           <div className="space-y-4">
-            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
+            <div
+              className="max-w-lg rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-white shadow-sm"
+              style={{ backgroundColor: MESSAGE_HUES[stepIndex % MESSAGE_HUES.length] }}
+            >
               {personalize(currentArea.agentIntro, customerName)}
             </div>
             <div className="space-y-5 rounded-lg border border-ink-100 bg-surface p-5">
@@ -231,7 +224,7 @@ export default function IntakeFlow({
 
         {!currentArea && mode === "rep" && (
           <div className="space-y-4">
-            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
+            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-brand-600 px-4 py-2.5 text-sm text-white shadow-sm">
               That&apos;s everything. Ready to generate the configuration package?
             </div>
             <div className="rounded-lg border border-ink-100 bg-surface p-5">
@@ -284,7 +277,7 @@ export default function IntakeFlow({
 
         {!currentArea && mode === "share" && (
           <div className="space-y-4">
-            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-ink-50 px-4 py-2.5 text-sm text-ink-700">
+            <div className="max-w-lg rounded-2xl rounded-tl-sm bg-emerald-600 px-4 py-2.5 text-sm text-white shadow-sm">
               That&apos;s everything — thank you.
             </div>
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
@@ -307,6 +300,7 @@ export default function IntakeFlow({
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

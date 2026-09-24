@@ -6,6 +6,32 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.7 — 2026-09-24
+Projects list redesign, Coupa-style project tabs, left-rail intake nav, and a Roles system.
+- Projects list: colored status pills (Active/Pending/Inactive) and filled colored icon buttons
+  (View/Edit/Delete) replace the plain link row; Edit opens a modal (name/notes/status), Delete
+  removes the project and everything under it.
+- Project detail page rebuilt around Coupa's own two-tier tab pattern: primary tabs (Overview /
+  Intake Sessions / Coupa Connection) with a filled dark pill for the active one and a rule line
+  underneath, sub-tabs per intake session with a colored underline when there's more than one.
+  Overview shows the Intake Session (carbon-navy header) and Coupa Connection (teal header) as two
+  clearly distinct panels, with every action — Copy customer link, Start new intake session,
+  Continue intake — a filled colored cell instead of a plain link.
+- Intake flow navigation rebuilt as a left-rail: all 14 steps are always visible down the left
+  side, the active step's form fills the wider right pane — replacing the old horizontal
+  scrolling strip.
+- Each intake step's intro message now has its own solid color (cycling through 8 hues) instead
+  of a flat gray bubble, so consecutive steps visibly stand apart.
+- Three-tier permission system: Standard / Admin / Super Admin (only a Super Admin can grant
+  Super Admin, from Admin Console).
+- New "Roles" tab under Settings (Super Admin only): define consultant-type labels — Coupa
+  Functional Consultant, Technical Consultant, Integration Consultant, QA Consultant, or any
+  other title — which Admin Console can then assign to any user.
+- Profile menu: shows join date, and location is now editable there directly (defaults to the
+  city/country detected at your last login, or type your own).
+- Needs two migrations before the status pills, Admin Console role changes, and Roles tab work —
+  see the handoff message for the exact SQL.
+
 ## v1.6 — 2026-09-24
 Filled-color data entry, filled section titles, and a dedicated Projects tab.
 - Every text/textarea/select where an answer actually gets typed — the Coupa Test connection

@@ -5,7 +5,7 @@ import { requireAdmin, isErrorResponse } from "@/lib/api-helpers";
 
 const setRoleSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
-  role: z.enum(["standard", "admin"]),
+  role: z.enum(["standard", "admin", "super_admin"]),
 });
 
 export async function POST(request: NextRequest) {
@@ -21,6 +21,10 @@ export async function POST(request: NextRequest) {
 
   if (email === admin.email) {
     return NextResponse.json({ error: "You can't change your own role" }, { status: 400 });
+  }
+
+  if (role === "super_admin" && admin.role !== "super_admin") {
+    return NextResponse.json({ error: "Only a Super Admin can grant Super Admin" }, { status: 403 });
   }
 
   const { error } = await supabaseAdmin.from("users").update({ role }).eq("email", email);

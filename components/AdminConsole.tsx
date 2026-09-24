@@ -2,11 +2,20 @@
 
 import { useEffect, useState } from "react";
 
+type PermissionRole = "standard" | "admin" | "super_admin";
+
+interface CustomRole {
+  id: string;
+  name: string;
+}
+
 interface Member {
   id: string;
   name: string | null;
   email: string;
-  role: "standard" | "admin";
+  role: PermissionRole;
+  custom_role_id: string | null;
+  custom_role_name: string | null;
   created_at: string;
   last_login_at: string | null;
   last_login_city: string | null;
@@ -17,11 +26,19 @@ interface Overview {
   totalUsers: number;
   totalStandard: number;
   totalAdmin: number;
+  totalSuperAdmin: number;
   users: Member[];
 }
 
-export default function AdminConsole({ myEmail }: { myEmail: string }) {
+const ROLE_LABEL: Record<PermissionRole, string> = {
+  standard: "Standard",
+  admin: "Admin",
+  super_admin: "Super Admin",
+};
+
+export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myRole: PermissionRole }) {
   const [overview, setOverview] = useState<Overview | null>(null);
+  const [roles, setRoles] = useState<CustomRole[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,13 +49,20 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
   const [inviteMessage, setInviteMessage] = useState<string | null>(null);
 
   const [roleBusyId, setRoleBusyId] = useState<string | null>(null);
+  const [consultantBusyId, setConsultantBusyId] = useState<string | null>(null);
   const [deleteBusyId, setDeleteBusyId] = useState<string | null>(null);
+
+  const canGrantSuperAdmin = myRole === "super_admin";
 
   async function loadOverview() {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/overview", { cache: "no-store" });
-      if (res.ok) setOverview(await res.json());
+      const [overviewRes, rolesRes] = await Promise.all([
+        fetch("/api/admin/overview", { cache: "no-store" }),
+        fetch("/api/admin/custom-roles", { cache: "no-store" }),
+      ]);
+      if (overviewRes.ok) setOverview(await overviewRes.json());
+      if (rolesRes.ok) setRoles((await rolesRes.json()).roles);
     } finally {
       setLoading(false);
     }
@@ -49,7 +73,7 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
     loadOverview();
   }, []);
 
-  async function handleSetRole(member: Member, role: "standard" | "admin") {
+  async function handleSetRole(member: Member, role: PermissionRole) {
     if (role === member.role) return;
     setRoleBusyId(member.id);
     setError(null);
@@ -66,6 +90,25 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
       setError(err instanceof Error ? err.message : "Could not update role");
     } finally {
       setRoleBusyId(null);
+    }
+  }
+
+  async function handleAssignConsultantRole(member: Member, customRoleId: string) {
+    setConsultantBusyId(member.id);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/assign-role", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: member.id, customRoleId: customRoleId || null }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not assign the role");
+      loadOverview();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not assign the role");
+    } finally {
+      setConsultantBusyId(null);
     }
   }
 
@@ -115,7 +158,9 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
       <h2 className="mb-3 font-display text-lg text-ink-800">Admin Console</h2>
       <p className="mb-4 max-w-2xl text-sm text-ink-500">
         Invite team members and see who&apos;s using the app — every user here has their own
-        account (email + password), so this reflects real sign-ups and sign-ins.
+        account (email + password), so this reflects real sign-ups and sign-ins. Consultant type
+        (Coupa Functional, Technical, Integration, QA, etc.) is defined under{" "}
+        <span className="font-semibold text-ink-700">Settings → Roles</span>.
       </p>
 
       {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
@@ -125,18 +170,22 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
       ) : (
         overview && (
           <>
-            <div className="mb-6 grid grid-cols-2 gap-3">
+            <div className="mb-6 grid grid-cols-3 gap-3">
               <div className="rounded-xl border border-ink-100 bg-brand-50 p-4 text-center">
                 <div className="text-2xl font-bold text-ink-800">{overview.totalUsers}</div>
                 <div className="mt-1 text-xs text-ink-500">Registered users</div>
               </div>
               <div className="rounded-xl border border-ink-100 bg-ink-50 p-4 text-center">
+                <div className="text-2xl font-bold text-ink-800">{overview.totalStandard}</div>
+                <div className="mt-1 text-xs text-ink-500">Standard</div>
+              </div>
+              <div className="rounded-xl border border-ink-100 bg-ink-50 p-4 text-center">
                 <div className="text-2xl font-bold text-ink-800">
-                  {overview.totalStandard}
-                  <span className="mx-1 text-ink-300">/</span>
                   {overview.totalAdmin}
+                  <span className="mx-1 text-ink-300">/</span>
+                  {overview.totalSuperAdmin}
                 </div>
-                <div className="mt-1 text-xs text-ink-500">Standard / Admin</div>
+                <div className="mt-1 text-xs text-ink-500">Admin / Super Admin</div>
               </div>
             </div>
 
@@ -147,6 +196,7 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
                     <th className="whitespace-nowrap p-2 text-left">Name</th>
                     <th className="whitespace-nowrap p-2 text-left">Email</th>
                     <th className="whitespace-nowrap p-2 text-left">Role</th>
+                    <th className="whitespace-nowrap p-2 text-left">Consultant type</th>
                     <th className="whitespace-nowrap p-2 text-left">Joined</th>
                     <th className="whitespace-nowrap p-2 text-left">Last signed in</th>
                     <th className="whitespace-nowrap p-2 text-left">Location</th>
@@ -156,7 +206,7 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
                 <tbody>
                   {overview.users.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="p-4 text-center text-ink-400">
+                      <td colSpan={8} className="p-4 text-center text-ink-400">
                         No one has signed up yet.
                       </td>
                     </tr>
@@ -164,26 +214,42 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
                     overview.users.map((m) => {
                       const location = [m.last_login_city, m.last_login_country].filter(Boolean).join(", ");
                       const isSelf = m.email === myEmail;
+                      const badgeClass =
+                        m.role === "super_admin" ? "role-badge--super" : m.role === "admin" ? "role-badge--admin" : "";
                       return (
                         <tr key={m.id} className="border-t border-ink-100">
                           <td className="whitespace-nowrap p-2 font-medium text-ink-800">{m.name || "—"}</td>
                           <td className="whitespace-nowrap p-2 text-ink-700">{m.email}</td>
                           <td className="whitespace-nowrap p-2">
-                            {isSelf ? (
-                              <span className={`role-badge ${m.role === "admin" ? "role-badge--admin" : ""}`}>
-                                {m.role === "admin" ? "Admin" : "Standard"}
-                              </span>
+                            {isSelf || (m.role === "super_admin" && !canGrantSuperAdmin) ? (
+                              <span className={`role-badge ${badgeClass}`}>{ROLE_LABEL[m.role]}</span>
                             ) : (
                               <select
                                 value={m.role}
                                 disabled={roleBusyId === m.id}
-                                onChange={(e) => handleSetRole(m, e.target.value as "standard" | "admin")}
+                                onChange={(e) => handleSetRole(m, e.target.value as PermissionRole)}
                                 className={`role-select-fill role-select-fill--${m.role} rounded-full px-2.5 py-1 text-[11px]`}
                               >
                                 <option value="standard">Standard</option>
                                 <option value="admin">Admin</option>
+                                {canGrantSuperAdmin && <option value="super_admin">Super Admin</option>}
                               </select>
                             )}
+                          </td>
+                          <td className="whitespace-nowrap p-2">
+                            <select
+                              value={m.custom_role_id ?? ""}
+                              disabled={consultantBusyId === m.id}
+                              onChange={(e) => handleAssignConsultantRole(m, e.target.value)}
+                              className="field-fill rounded-md px-2 py-1 text-[11px]"
+                            >
+                              <option value="">— Not set —</option>
+                              {roles.map((r) => (
+                                <option key={r.id} value={r.id}>
+                                  {r.name}
+                                </option>
+                              ))}
+                            </select>
                           </td>
                           <td className="whitespace-nowrap p-2 text-ink-500">
                             {new Date(m.created_at).toLocaleDateString()}
@@ -197,9 +263,12 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
                               onClick={() => handleDelete(m)}
                               disabled={isSelf || deleteBusyId === m.id}
                               title={isSelf ? "You can't delete your own account" : "Delete user"}
-                              className="rounded-md px-2 py-1 text-red-600 hover:bg-red-50 disabled:opacity-30"
+                              className="icon-btn icon-btn--delete"
+                              aria-label="Delete user"
                             >
-                              Delete
+                              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
+                                <path d="M4 6h12M8 6V4h4v2m-6 0 .6 10.2a1 1 0 0 0 1 .8h4.8a1 1 0 0 0 1-.8L14 6" />
+                              </svg>
                             </button>
                           </td>
                         </tr>
@@ -247,7 +316,8 @@ export default function AdminConsole({ myEmail }: { myEmail: string }) {
             <option value="admin">Admin</option>
           </select>
           <p className="mt-1 text-xs text-ink-400">
-            Applied automatically as soon as they sign up with this email.
+            Applied automatically as soon as they sign up with this email. Super Admin is granted
+            separately, from the table above.
           </p>
         </div>
         <button
