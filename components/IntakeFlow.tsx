@@ -119,7 +119,7 @@ export default function IntakeFlow({
           </Link>
         )}
         <h1 className="mt-1 text-lg font-semibold text-ink-800">{customerName}</h1>
-        <p className="text-sm text-ink-400">Coupa Sourcing intake — {areas.length} areas</p>
+        <p className="text-sm text-ink-400">Coupa Sourcing intake, {areas.length} areas</p>
       </div>
 
       {mode === "rep" && status === "completed" && resultsHref && (
@@ -247,7 +247,7 @@ export default function IntakeFlow({
               </ul>
               {!allComplete && (
                 <p className="mb-3 text-sm text-amber-600">
-                  Some required fields are still missing — go back and fill them in before generating.
+                  Some required fields are still missing. Go back and fill them in before generating.
                 </p>
               )}
               {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
@@ -273,17 +273,17 @@ export default function IntakeFlow({
         {!currentArea && mode === "share" && (
           <div className="space-y-4">
             <div className="max-w-lg rounded-2xl rounded-tl-sm bg-emerald-600 px-4 py-2.5 text-sm text-white shadow-sm">
-              That&apos;s everything — thank you.
+              That&apos;s everything, thank you.
             </div>
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
               {allComplete ? (
                 <p>
                   Your answers have been submitted. Our team will review them and follow up with
-                  next steps — you don&apos;t need to do anything else here.
+                  next steps. You don&apos;t need to do anything else here.
                 </p>
               ) : (
                 <p className="text-amber-700">
-                  A few required fields are still missing — go back and fill them in.
+                  A few required fields are still missing. Go back and fill them in.
                 </p>
               )}
               <button

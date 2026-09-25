@@ -47,7 +47,7 @@ You've been invited to Sourcing CoPilot.
 
 1. Go to ${appUrl}/signup
 2. Create your account with this email (${email}) and a password of your choice.
-3. Sign in — your access level is already set up and applies automatically.
+3. Sign in. Your access level is already set up and applies automatically.
 
 Thanks!`;
 

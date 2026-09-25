@@ -120,7 +120,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
       <div className="bg-surface p-5">
       <p className="text-xs text-ink-400">
         OAuth2 client-credentials connection to the customer&apos;s Coupa Test tenant. Nothing is
-        pushed automatically — this only enables the connector once you choose to use it.
+        pushed automatically. This only enables the connector once you choose to use it.
       </p>
 
       {!showForm && connection && (

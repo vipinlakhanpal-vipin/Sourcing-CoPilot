@@ -129,7 +129,7 @@ export default function ProjectDetailTabs({
             </div>
           ) : (
             <div className="rounded-lg border border-dashed border-ink-200 bg-surface p-6 text-center text-sm text-ink-400">
-              No intake session yet — click &quot;Start new intake session&quot; above.
+              No intake session yet. Click &quot;Start new intake session&quot; above.
             </div>
           ))}
 

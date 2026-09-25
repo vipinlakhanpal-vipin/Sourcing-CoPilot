@@ -97,7 +97,7 @@ export default function RolesManager() {
         <p className="text-sm text-ink-400">Loading…</p>
       ) : roles.length === 0 ? (
         <div className="rounded-lg border border-dashed border-ink-200 bg-surface p-6 text-center text-sm text-ink-400">
-          No roles defined yet — add one above (e.g. Coupa Functional Consultant).
+          No roles defined yet. Add one above (e.g. Coupa Functional Consultant).
         </div>
       ) : (
         <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface shadow-sm">

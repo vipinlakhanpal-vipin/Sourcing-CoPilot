@@ -84,7 +84,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "industry_context",
     title: "Industry & business context",
     agentIntro:
-      "First, a little about {{customer}} itself — this shapes how we tailor category and supplier guidance.",
+      "First, a little about {{customer}} itself. This shapes how we tailor category and supplier guidance.",
     scope: "sourcing",
     fields: [
       {
@@ -177,13 +177,13 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "rfx_templates",
     title: "RFx & event templates by category",
     agentIntro:
-      "Different categories usually need different event templates — let's map which template and rigor applies where.",
+      "Different categories usually need different event templates, so let's map which template and rigor applies where.",
     scope: "sourcing",
     fields: [
       {
         id: "template_policy_by_category_and_spend",
         label:
-          "For each category, add the event type(s) and rigor that apply at a given spend threshold — this is the starting point for which templates get built",
+          "For each category, add the event type(s) and rigor that apply at a given spend threshold. This is the starting point for which templates get built",
         helpText: "e.g. Direct, >$500k, RFP + Reverse auction, Multi-round",
         type: "category_rules",
         optionsFromField: { areaId: "spend_categories", fieldId: "categories" },
@@ -217,7 +217,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
         options: [
           "Templates exist and can be reused/adapted",
           "Partial templates exist",
-          "Nothing exists yet — build from scratch",
+          "Nothing exists yet, build from scratch",
         ],
         required: true,
       },
@@ -277,7 +277,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     fields: [
       {
         id: "master_list_format",
-        label: "Existing supplier master list — format and source system",
+        label: "Existing supplier master list: format and source system",
         type: "text",
         placeholder: "e.g. Excel export from SAP, ~800 suppliers",
         required: true,
@@ -366,7 +366,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "approval_grading_roster",
     title: "Named approvers & graders",
     agentIntro:
-      "Now the actual people — Coupa approval chains and scorecards get built around real named users, not just a policy description.",
+      "Now the actual people. Coupa approval chains and scorecards get built around real named users, not just a policy description.",
     scope: "sourcing",
     fields: [
       {
@@ -384,7 +384,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "master_data_erp",
     title: "Master data & ERP integration",
     agentIntro:
-      "Coupa Sourcing needs item, supplier, and currency master data loaded before go-live — let's see what's ready and how it should get there.",
+      "Coupa Sourcing needs item, supplier, and currency master data loaded before go-live, so let's see what's ready and how it should get there.",
     scope: "sourcing",
     fields: [
       {
@@ -488,8 +488,8 @@ export const INTAKE_AREAS: IntakeArea[] = [
         label: "Should awarding a sourcing event create the purchase order directly from Coupa Sourcing?",
         type: "select",
         options: [
-          "Yes — award should create the PO directly",
-          "No — PO creation is a separate step in a P2P/ERP system",
+          "Yes, award should create the PO directly",
+          "No, PO creation is a separate step in a P2P/ERP system",
           "Not decided yet",
         ],
         required: true,
@@ -551,7 +551,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
     id: "broader_coupa_landscape",
     title: "Broader Coupa landscape (context only)",
     agentIntro:
-      "Last one, and it's optional — this section is for our team's planning only. Nothing here is used to configure Coupa Sourcing.",
+      "Last one, and it's optional. This section is for our team's planning only, and nothing here is used to configure Coupa Sourcing.",
     scope: "context",
     fields: [
       {
@@ -571,7 +571,7 @@ export const INTAKE_AREAS: IntakeArea[] = [
       {
         id: "procurement_challenges",
         label:
-          "What are the biggest procurement challenges today, across any part of the process — not just sourcing?",
+          "What are the biggest procurement challenges today, across any part of the process, not just sourcing?",
         type: "textarea",
         required: false,
       },

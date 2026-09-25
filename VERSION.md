@@ -6,6 +6,21 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.2 — 2026-09-25
+Human-sounding copy across the app, generic example names, and no exposed AI vendor name.
+- Removed the placeholder "Annie" example from the Guide page's filled-in-by badge demo, replaced
+  with the generic "Customer (Customer Name)" so it reads as a template, not a real person.
+- The Guide page no longer says a package is sent "to Claude" — now "to the Sourcing CoPilot AI
+  Agent," keeping the underlying model out of user-facing copy.
+- Removed em dashes and en dashes from every user-facing sentence across the app (Guide, Dashboard,
+  Settings, Admin Console, Roles, the intake flow, the Coupa connector's own messages, and the
+  intake question copy itself), rewritten as plain sentences with periods and commas. The AI system
+  prompt that writes each configuration package now explicitly instructs the model to do the same
+  in the documents it generates, including spelling out number ranges ("20 to 30" instead of
+  "20-30").
+- Left the small "—" placeholder used for empty table/profile values (e.g. no location set) as is,
+  since that is a standard UI convention, not the sentence-style issue this was about.
+
 ## v2.1 — 2026-09-25
 Removed SCP branding from user-facing copy and generated documents.
 - Guide page no longer references "SCP" — now reads "the Coupa implementation team" / "standard

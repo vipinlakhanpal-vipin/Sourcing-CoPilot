@@ -72,7 +72,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <PageBanner
         title="Dashboard"
-        description="Scope a Coupa Sourcing deployment for each customer or opportunity — from first conversation to a ready-to-configure package."
+        description="Scope a Coupa Sourcing deployment for each customer or opportunity, from first conversation to a ready-to-configure package."
       />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

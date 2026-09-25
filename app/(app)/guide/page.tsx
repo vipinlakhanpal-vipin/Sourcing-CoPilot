@@ -58,12 +58,12 @@ export default function GuidePage() {
                   Sourcing CoPilot takes a customer from &ldquo;we want Coupa Sourcing&rdquo; to a
                   fully specified, ready-to-configure setup. It interviews the customer through{" "}
                   {INTAKE_AREAS.length} guided areas, then generates a structured{" "}
-                  <strong>configuration package</strong> — a readable document plus the underlying
-                  structured data — for the Coupa implementation team.
+                  <strong>configuration package</strong>, a readable document plus the underlying
+                  structured data, for the Coupa implementation team.
                 </p>
                 <div className="mt-3 rounded-md border border-ink-100 bg-ink-50 p-3 text-ink-500">
                   It produces a specification of what to build in Coupa, and can now connect to a
-                  real Coupa tenant to confirm access — but does not yet create or change anything
+                  real Coupa tenant to confirm access, but does not yet create or change anything
                   inside Coupa. See{" "}
                   <button onClick={() => setTab("connection")} className="underline">
                     Connection
@@ -79,7 +79,7 @@ export default function GuidePage() {
               <h2 className="text-lg font-extrabold text-brand-700">Process</h2>
               <InnerCard>
                 <p className="mb-3">
-                  Two ways the {INTAKE_AREAS.length} areas get filled in — same areas, same
+                  Two ways the {INTAKE_AREAS.length} areas get filled in: same areas, same
                   generated package either way. The only difference is who&apos;s typing and how
                   they get there.
                 </p>
@@ -94,7 +94,7 @@ export default function GuidePage() {
                         <li>
                           Open the project, click <strong>Continue intake</strong>
                         </li>
-                        <li>Walk through the areas live — call, workshop, however you run discovery</li>
+                        <li>Walk through the areas live: call, workshop, however you run discovery</li>
                         <li>Answers save after every &ldquo;Continue,&rdquo; under your own account</li>
                       </ol>
                       <div className="mt-3 border-t border-dashed border-ink-100 pt-3">
@@ -116,20 +116,20 @@ export default function GuidePage() {
                           Click <strong>Copy customer link</strong> and send it
                         </li>
                         <li>They type their name (no login needed) and work through it on their own time</li>
-                        <li>Progress saves automatically — they can resume later from the same link</li>
+                        <li>Progress saves automatically, so they can resume later from the same link</li>
                       </ol>
                       <div className="mt-3 border-t border-dashed border-ink-100 pt-3">
                         <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-ink-400">
                           Shows on the project page as
                         </p>
-                        <span className="fill-badge fill-badge--customer">🏢 Filled in by Annie (Customer)</span>
+                        <span className="fill-badge fill-badge--customer">🏢 Filled in by Customer (Customer Name)</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="mt-3 rounded-md border border-ink-100 bg-ink-50 p-3 text-ink-600">
                   <strong className="text-ink-800">Either way:</strong> the intake still shows
-                  &ldquo;in progress&rdquo; until you generate the package yourself — that step is
+                  &ldquo;in progress&rdquo; until you generate the package yourself. That step is
                   always rep-only, even after a customer finishes their side.
                 </div>
               </InnerCard>
@@ -142,7 +142,7 @@ export default function GuidePage() {
               <InnerCard>
                 <p className="mb-3">
                   {INTAKE_AREAS.length} areas, one per screen. Each gets its own accent as you move
-                  through the left-hand rail — the dashed outline marks the one area that&apos;s
+                  through the left-hand rail. The dashed outline marks the one area that&apos;s
                   context-only and never becomes Sourcing configuration.
                 </p>
                 <div className="grid gap-2.5 sm:grid-cols-2">
@@ -173,7 +173,7 @@ export default function GuidePage() {
                 <p className="mb-3">
                   Once all {INTAKE_AREAS.length} areas are complete, a review screen lists
                   everything entered. Clicking <strong>Generate configuration package</strong>{" "}
-                  sends those answers to Claude, which takes roughly 20–30 seconds to:
+                  sends those answers to the Sourcing CoPilot AI Agent, which takes roughly 20 to 30 seconds to:
                 </p>
                 <div className="timeline">
                   <div className="tstep">
@@ -189,8 +189,8 @@ export default function GuidePage() {
                   </div>
                   <div className="tstep">
                     <b>Keep context-only separate</b>
-                    closes with a &ldquo;Beyond Sourcing (context only)&rdquo; section — never
-                    mixed into the Sourcing configuration guidance above it.
+                    closes with a &ldquo;Beyond Sourcing (context only)&rdquo; section that is
+                    never mixed into the Sourcing configuration guidance above it.
                   </div>
                 </div>
                 <p className="mt-3 text-ink-500">
@@ -241,7 +241,7 @@ export default function GuidePage() {
                     <p className="font-medium">Built and working: a real, testable connection to a Coupa tenant.</p>
                     <p className="mt-1">
                       &ldquo;Coupa Test connection&rdquo; stores an OAuth2 client-credentials
-                      connection (instance URL, client ID/secret, scope) — the current, documented
+                      connection (instance URL, client ID/secret, scope), the current, documented
                       Coupa authentication method. &ldquo;Test connection&rdquo; exchanges those
                       credentials for a real access token and makes one safe, read-only call to
                       confirm API access. Nothing is created, changed, or deleted by this.
@@ -255,8 +255,8 @@ export default function GuidePage() {
                     </ul>
                     <p className="mt-2">
                       Per Coupa&apos;s own published Sourcing API, creating an event requires a{" "}
-                      <code>source_id</code> — an existing event/template already built in
-                      Coupa&apos;s UI — so full template creation from nothing does not appear to
+                      <code>source_id</code>, an existing event/template already built in
+                      Coupa&apos;s UI, so full template creation from nothing does not appear to
                       be API-reachable. This is based on public documentation, not a live test
                       against a real tenant, so treat it as informed, not certain.
                     </p>
@@ -274,14 +274,14 @@ export default function GuidePage() {
                   <div className="pb-4">
                     <p className="font-medium text-ink-800">Can I run more than one intake for the same project?</p>
                     <p className="mt-1 text-ink-500">
-                      Yes — from the project&apos;s page, click &ldquo;Start new intake
+                      Yes, from the project&apos;s page, click &ldquo;Start new intake
                       session.&rdquo; Useful for a re-scope, or when the original was incomplete.
                     </p>
                   </div>
                   <div className="py-4">
                     <p className="font-medium text-ink-800">Can I edit answers after generating a package?</p>
                     <p className="mt-1 text-ink-500">
-                      Yes, via &ldquo;Edit answers&rdquo; on the results page — but editing
+                      Yes, via &ldquo;Edit answers&rdquo; on the results page, but editing
                       doesn&apos;t automatically regenerate the package. Generate again for an
                       updated one.
                     </p>
@@ -289,14 +289,14 @@ export default function GuidePage() {
                   <div className="py-4">
                     <p className="font-medium text-ink-800">Who can see a project&apos;s intake data?</p>
                     <p className="mt-1 text-ink-500">
-                      Only the account that created it — everything is scoped to the logged-in
+                      Only the account that created it. Everything is scoped to the logged-in
                       user.
                     </p>
                   </div>
                   <div className="pt-4">
                     <p className="font-medium text-ink-800">How do I know if the customer or I filled something in?</p>
                     <p className="mt-1 text-ink-500">
-                      The Intake Session tab on the project&apos;s page shows a filled badge — navy
+                      The Intake Session tab on the project&apos;s page shows a filled badge: navy
                       &ldquo;Filled in by you&rdquo; when you ran it live, or teal &ldquo;Filled in
                       by [name]&rdquo; when a customer used the share link. See{" "}
                       <button onClick={() => setTab("process")} className="underline">

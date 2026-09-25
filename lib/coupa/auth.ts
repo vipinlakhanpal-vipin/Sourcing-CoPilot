@@ -27,7 +27,7 @@ export async function getAccessToken(config: CoupaConnectionConfig): Promise<str
     });
   } catch (err) {
     throw new Error(
-      `Could not reach ${baseUrl}/oauth2/token — check the instance URL. (${(err as Error).message})`
+      `Could not reach ${baseUrl}/oauth2/token. Check the instance URL. (${(err as Error).message})`
     );
   }
 

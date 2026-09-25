@@ -91,7 +91,7 @@ function AppearanceSection() {
     <section>
       <div className="max-w-lg rounded-xl border border-ink-100 bg-surface p-6 shadow-sm">
         <h3 className="field-title mb-3 text-sm">Mode</h3>
-        <p className="mb-4 text-xs text-ink-400">Personal display preference — saved in this browser only.</p>
+        <p className="mb-4 text-xs text-ink-400">Personal display preference, saved in this browser only.</p>
         <div className="flex gap-2">
           <button
             type="button"

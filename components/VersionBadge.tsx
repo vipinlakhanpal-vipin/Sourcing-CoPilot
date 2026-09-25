@@ -38,7 +38,7 @@ export default function VersionBadge() {
   return (
     <button
       onClick={() => window.location.reload()}
-      title={updateAvailable ? "A new version is available — click to refresh" : "Refresh"}
+      title={updateAvailable ? "A new version is available, click to refresh" : "Refresh"}
       className="relative hidden shrink-0 items-center gap-1 rounded-full border border-white/15 px-2 py-0.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white sm:flex"
     >
       <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.5">

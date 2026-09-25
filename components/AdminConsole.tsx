@@ -157,7 +157,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
     <section>
       <h2 className="field-title mb-3 text-sm">Admin Console</h2>
       <p className="mb-4 max-w-2xl text-sm text-ink-500">
-        Invite team members and see who&apos;s using the app — every user here has their own
+        Invite team members and see who&apos;s using the app. Every user here has their own
         account (email + password), so this reflects real sign-ups and sign-ins. Consultant type
         (Coupa Functional, Technical, Integration, QA, etc.) is defined under{" "}
         <span className="font-semibold text-ink-700">Settings → Roles</span>.
@@ -328,7 +328,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
           {sending ? "Creating…" : "Create Invitation"}
         </button>
         <p className="text-xs text-ink-400">
-          No automated email is sent yet — this creates the invitation record and gives you a
+          No automated email is sent yet. This creates the invitation record and gives you a
           message below to send them yourself.
         </p>
       </form>
@@ -336,7 +336,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
       {inviteMessage && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4">
           <p className="mb-2 text-sm font-medium text-brand-700">
-            Invitation created — copy this message to send them:
+            Invitation created. Copy this message to send them:
           </p>
           <pre className="whitespace-pre-wrap rounded-lg border border-ink-100 bg-surface p-3 text-xs text-ink-700">
             {inviteMessage}

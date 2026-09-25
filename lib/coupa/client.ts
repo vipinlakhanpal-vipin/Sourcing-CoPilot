@@ -33,7 +33,7 @@ export async function testConnection(config: CoupaConnectionConfig): Promise<Cou
         message: `Got a token, but the API call failed (HTTP ${response.status}): ${text.slice(0, 500)}`,
       };
     }
-    return { ok: true, message: "Connected — token issued and API access confirmed." };
+    return { ok: true, message: "Connected. Token issued and API access confirmed." };
   } catch (err) {
     return {
       ok: false,

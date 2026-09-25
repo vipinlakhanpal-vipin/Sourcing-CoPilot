@@ -55,7 +55,7 @@ export default function ShareIntakeClient({
           <h1 className="text-lg font-semibold text-ink-800">Sourcing CoPilot</h1>
           <p className="mt-1 text-sm text-ink-400">
             {customerName} is scoping a Coupa Sourcing deployment. This should take about
-            10–15 minutes — you can leave and come back any time using this same link.
+            10 to 15 minutes. You can leave and come back any time using this same link.
           </p>
         </div>
         <form onSubmit={handleStart} className="space-y-4 rounded-lg border border-ink-100 bg-surface p-5">

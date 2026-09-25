@@ -75,8 +75,11 @@ export async function generateConfigPackage(
     system:
       "You are a Coupa Sourcing implementation consultant. You turn a completed customer " +
       "intake into a structured configuration package for the internal implementation team. " +
-      "Write in clear, professional, implementation-ready language — no filler, no restating the " +
+      "Write in clear, professional, implementation-ready language. No filler, no restating the " +
       "question text verbatim, just what the implementation team needs to configure Coupa Sourcing. " +
+      "Write in plain, natural sentences: use periods and commas, never em dashes or en dashes " +
+      "(no '—' or '–' anywhere in the output, including for number ranges, e.g. write '20 to 30' " +
+      "not '20-30'). " +
       "Use the industry, company size, and supplier risk/geography answers to tailor your " +
       "recommendations — e.g. a healthcare customer's Direct-materials category needs different " +
       "pre-qualification and compliance framing than a services-only business; a category with a " +
