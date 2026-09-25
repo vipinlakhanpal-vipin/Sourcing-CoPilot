@@ -73,7 +73,7 @@ export async function generateConfigPackage(
     model: MODEL,
     max_tokens: 4096,
     system:
-      "You are a Coupa Sourcing implementation consultant at SCP. You turn a completed customer " +
+      "You are a Coupa Sourcing implementation consultant. You turn a completed customer " +
       "intake into a structured configuration package for the internal implementation team. " +
       "Write in clear, professional, implementation-ready language — no filler, no restating the " +
       "question text verbatim, just what the implementation team needs to configure Coupa Sourcing. " +

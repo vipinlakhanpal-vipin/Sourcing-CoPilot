@@ -6,6 +6,13 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.1 — 2026-09-25
+Removed SCP branding from user-facing copy and generated documents.
+- Guide page no longer references "SCP" — now reads "the Coupa implementation team" / "standard
+  Coupa implementation practice."
+- The AI system prompt that writes each configuration package no longer describes itself as
+  working "at SCP" — this affects the tone of actually generated documents, not just in-app copy.
+
 ## v2.0 — 2026-09-25
 Guide page rebuilt as a left-rail nav, Dashboard project charts, and a proper color palette.
 - Guide page rebuilt again: replaced the anchor-link pill nav (which could scroll a section's

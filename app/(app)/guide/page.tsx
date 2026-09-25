@@ -59,7 +59,7 @@ export default function GuidePage() {
                   fully specified, ready-to-configure setup. It interviews the customer through{" "}
                   {INTAKE_AREAS.length} guided areas, then generates a structured{" "}
                   <strong>configuration package</strong> — a readable document plus the underlying
-                  structured data — for SCP&apos;s implementation team.
+                  structured data — for the Coupa implementation team.
                 </p>
                 <div className="mt-3 rounded-md border border-ink-100 bg-ink-50 p-3 text-ink-500">
                   It produces a specification of what to build in Coupa, and can now connect to a
@@ -209,7 +209,7 @@ export default function GuidePage() {
                 <div className="timeline">
                   <div className="tstep">
                     <b>Download &amp; share</b>
-                    the structured data (JSON) and the rendered document, to SCP&apos;s
+                    the structured data (JSON) and the rendered document, to the Coupa
                     implementation team or the integration agent if ERP/SFTP work is in scope.
                   </div>
                   <div className="tstep">
@@ -225,7 +225,7 @@ export default function GuidePage() {
                   <div className="tstep">
                     <b>Promote to Production</b>
                     via Coupa&apos;s own environment-promotion tooling or a manual rebuild,
-                    following SCP&apos;s standard implementation practice.
+                    following standard Coupa implementation practice.
                   </div>
                 </div>
               </InnerCard>
