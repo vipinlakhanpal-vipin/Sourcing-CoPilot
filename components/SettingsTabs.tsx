@@ -36,7 +36,7 @@ function AccountSection({ account }: { account: AccountInfo }) {
   return (
     <section>
       <div className="max-w-lg rounded-xl border border-ink-100 bg-surface p-5 shadow-sm">
-        <h2 className="font-display text-base text-ink-800">Account</h2>
+        <h2 className="field-title text-sm">Account</h2>
         <dl className="mt-3 space-y-3 text-sm">
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Name</dt>
@@ -90,7 +90,7 @@ function AppearanceSection() {
   return (
     <section>
       <div className="max-w-lg rounded-xl border border-ink-100 bg-surface p-6 shadow-sm">
-        <h3 className="mb-3 text-sm font-semibold text-ink-800">Mode</h3>
+        <h3 className="field-title mb-3 text-sm">Mode</h3>
         <p className="mb-4 text-xs text-ink-400">Personal display preference — saved in this browser only.</p>
         <div className="flex gap-2">
           <button

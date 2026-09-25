@@ -6,6 +6,20 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.8 — 2026-09-25
+Project detail refinements, new logo.
+- Project detail page: only two primary tabs now — Intake Session and Coupa Connection — with the
+  Coupa Connection frame appearing only once that tab is clicked, not shown by default.
+- "Start new intake session" moved up next to the project name; the tab-row toolbar now holds just
+  Copy customer link and Continue intake.
+- Coupa Connection's panel now uses the exact same carbon-fibre-strip header as Intake Session,
+  instead of its own separate teal-pill/teal-border treatment — the two panels are visually
+  consistent with each other.
+- Projects list: "All projects" heading in brand teal; each project name is now a filled, clearly
+  clickable navy cell instead of plain text with no hover affordance.
+- New logo mark ("Spark to Spec" — an AI spark resolving into two document lines) replaces the
+  previous compass/sparkle mark, built into `components/BrandMark.tsx`.
+
 ## v1.7 — 2026-09-24
 Projects list redesign, Coupa-style project tabs, left-rail intake nav, and a Roles system.
 - Projects list: colored status pills (Active/Pending/Inactive) and filled colored icon buttons

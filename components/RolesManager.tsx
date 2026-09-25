@@ -65,7 +65,7 @@ export default function RolesManager() {
 
   return (
     <section>
-      <h2 className="mb-3 font-display text-lg text-ink-800">Roles</h2>
+      <h2 className="field-title mb-3 text-sm">Roles</h2>
       <p className="mb-4 max-w-2xl text-sm text-ink-500">
         Consultant-type labels (Coupa Functional Consultant, Technical Consultant, Integration
         Consultant, QA Consultant, etc.) that can be assigned to any user from Admin Console.

@@ -108,16 +108,17 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
   const showForm = editing || connection === null;
 
   return (
-    <div className="rounded-lg border border-ink-100 bg-surface p-5">
-      <div className="flex items-center justify-between">
-        <h2 className="field-title text-sm">Coupa Test connection</h2>
+    <div className="overflow-hidden rounded-xl border border-ink-100">
+      <div className="strip-carbon panel-head flex items-center justify-between">
+        <span>Coupa Test Connection</span>
         {connection && !editing && (
-          <button onClick={() => setEditing(true)} className="text-xs font-medium text-ink-400 hover:text-ink-800">
+          <button onClick={() => setEditing(true)} className="text-xs font-medium text-white/70 hover:text-white">
             Edit
           </button>
         )}
       </div>
-      <p className="mt-1 text-xs text-ink-400">
+      <div className="bg-surface p-5">
+      <p className="text-xs text-ink-400">
         OAuth2 client-credentials connection to the customer&apos;s Coupa Test tenant. Nothing is
         pushed automatically — this only enables the connector once you choose to use it.
       </p>
@@ -209,6 +210,7 @@ export default function CoupaConnectionCard({ customerId }: { customerId: string
           </div>
         </form>
       )}
+      </div>
     </div>
   );
 }

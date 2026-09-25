@@ -22,7 +22,7 @@ export default async function ProjectsPage() {
       />
 
       <div className="flex items-center justify-between">
-        <h2 className="font-display text-lg text-ink-800">All projects</h2>
+        <h2 className="font-display text-lg text-brand-700">All projects</h2>
         <NewCustomerForm />
       </div>
 

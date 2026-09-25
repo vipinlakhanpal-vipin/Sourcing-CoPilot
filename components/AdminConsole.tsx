@@ -155,7 +155,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
 
   return (
     <section>
-      <h2 className="mb-3 font-display text-lg text-ink-800">Admin Console</h2>
+      <h2 className="field-title mb-3 text-sm">Admin Console</h2>
       <p className="mb-4 max-w-2xl text-sm text-ink-500">
         Invite team members and see who&apos;s using the app — every user here has their own
         account (email + password), so this reflects real sign-ups and sign-ins. Consultant type

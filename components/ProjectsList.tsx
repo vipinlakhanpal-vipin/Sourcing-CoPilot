@@ -147,9 +147,12 @@ export default function ProjectsList({ initialProjects }: { initialProjects: Pro
       <ul className="divide-y divide-ink-100 rounded-lg border border-ink-100 bg-surface shadow-sm">
         {projects.map((project) => (
           <li key={project.id} className="flex items-center justify-between gap-4 px-4 py-3.5">
-            <Link href={`/customers/${project.id}`} className="min-w-0 flex-1 hover:opacity-80">
-              <p className="truncate text-sm font-medium text-ink-800">{project.name}</p>
-              <p className="text-xs text-ink-400">
+            <Link
+              href={`/customers/${project.id}`}
+              className="min-w-0 flex-1 rounded-lg bg-ink-800 px-4 py-2.5 transition-colors hover:bg-ink-700"
+            >
+              <p className="truncate text-sm font-semibold text-white">{project.name}</p>
+              <p className="text-xs text-white/60">
                 Updated {new Date(project.updated_at).toLocaleDateString()}
               </p>
             </Link>
