@@ -50,6 +50,21 @@ export interface IntakeField {
 
 export type IntakeAreaScope = "sourcing" | "context";
 
+/** One muted, solid accent per area — cycled by index — so each of the 14
+ * steps reads as visually distinct (per-step message bubble, Guide page area
+ * grid) without looking bright/neon. Deliberately desaturated compared to
+ * the brand teal, so nothing here competes with it. */
+export const AREA_HUES = [
+  "#3d7d73",
+  "#51648c",
+  "#8c6a3d",
+  "#8c4a52",
+  "#6a5a82",
+  "#3d6d82",
+  "#4a7d5e",
+  "#7d5a6a",
+] as const;
+
 export interface IntakeArea {
   id: string;
   title: string;

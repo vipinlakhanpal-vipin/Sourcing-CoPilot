@@ -3,13 +3,8 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FieldValue, IntakeArea, IntakeAnswers, isAreaComplete, personalize } from "@/lib/intake-schema";
+import { AREA_HUES, FieldValue, IntakeArea, IntakeAnswers, isAreaComplete, personalize } from "@/lib/intake-schema";
 import IntakeFieldInput from "./IntakeFieldInput";
-
-// One solid accent per area so each step's intro message visibly stands
-// apart from the last as you move through the 14-step process, instead of
-// every step sharing the same flat gray bubble.
-const MESSAGE_HUES = ["#2fb8a6", "#6366f1", "#d97706", "#e11d48", "#7c3aed", "#0284c7", "#059669", "#c026d5"];
 
 interface Props {
   /** Base path for save/generate requests, e.g. `/api/intake/<id>` or `/api/share/<token>`. */
@@ -163,7 +158,7 @@ export default function IntakeFlow({
           <div className="space-y-4">
             <div
               className="max-w-lg rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-white shadow-sm"
-              style={{ backgroundColor: MESSAGE_HUES[stepIndex % MESSAGE_HUES.length] }}
+              style={{ backgroundColor: AREA_HUES[stepIndex % AREA_HUES.length] }}
             >
               {personalize(currentArea.agentIntro, customerName)}
             </div>

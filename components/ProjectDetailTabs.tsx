@@ -98,7 +98,16 @@ export default function ProjectDetailTabs({
         {primaryTab === "session" &&
           (activeSession ? (
             <div className="overflow-hidden rounded-xl border border-ink-100">
-              <div className="strip-carbon panel-head">Intake Session</div>
+              <div className="strip-carbon panel-head flex items-center justify-between">
+                <span>Intake Session</span>
+                {activeSession.respondent_name ? (
+                  <span className="fill-badge fill-badge--customer">
+                    🏢 Filled in by {activeSession.respondent_name} (Customer)
+                  </span>
+                ) : (
+                  <span className="fill-badge fill-badge--consultant">👤 Filled in by you (Consultant)</span>
+                )}
+              </div>
               <div className="space-y-3 bg-surface p-4">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-ink-400">Started</span>
@@ -116,12 +125,6 @@ export default function ProjectDetailTabs({
                     {activeSession.status === "completed" ? "Completed" : "In progress"}
                   </span>
                 </div>
-                {activeSession.respondent_name && (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-ink-400">Filled in by</span>
-                    <span className="font-medium text-ink-700">{activeSession.respondent_name}</span>
-                  </div>
-                )}
               </div>
             </div>
           ) : (

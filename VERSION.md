@@ -6,6 +6,21 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v1.9 — 2026-09-25
+Guide page rebuilt for real, and a real "filled in by" differentiator.
+- Guide page rebuilt to match the approved mockup: a carbon-navy hero, subtle standardized pill
+  navigation (matching Settings' own tab style), colored section titles, every section in a
+  consistent card frame, a muted-color grid for all 14 areas, and timeline-styled steps for
+  "Generating a package" and "After you generate."
+- New "Two ways the 14 areas get filled in" section — explains both paths (you fill it in live vs.
+  a customer uses the self-service link) side by side, including what each looks like once filled.
+- Real feature, not just documentation: the Intake Session panel now shows a filled badge — navy
+  "Filled in by you (Consultant)" when a rep ran it, teal "Filled in by [name] (Customer)" when a
+  customer used the share link — driven by whether a respondent name was captured.
+- Unified the per-step message-bubble colors and the Guide page's area-grid colors onto one
+  shared, muted 8-color palette (`AREA_HUES` in `lib/intake-schema.ts`) instead of two separate,
+  brighter palettes.
+
 ## v1.8 — 2026-09-25
 Project detail refinements, new logo.
 - Project detail page: only two primary tabs now — Intake Session and Coupa Connection — with the
