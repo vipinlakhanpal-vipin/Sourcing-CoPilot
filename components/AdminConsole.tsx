@@ -218,7 +218,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
                         m.role === "super_admin" ? "role-badge--super" : m.role === "admin" ? "role-badge--admin" : "";
                       return (
                         <tr key={m.id} className="border-t border-ink-100">
-                          <td className="whitespace-nowrap p-2 font-medium text-ink-800">{m.name || "—"}</td>
+                          <td className="whitespace-nowrap p-2 font-medium text-ink-800">{m.name || "Not set"}</td>
                           <td className="whitespace-nowrap p-2 text-ink-700">{m.email}</td>
                           <td className="whitespace-nowrap p-2">
                             {isSelf || (m.role === "super_admin" && !canGrantSuperAdmin) ? (
@@ -243,7 +243,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
                               onChange={(e) => handleAssignConsultantRole(m, e.target.value)}
                               className="field-fill rounded-md px-2 py-1 text-[11px]"
                             >
-                              <option value="">— Not set —</option>
+                              <option value="">Not set</option>
                               {roles.map((r) => (
                                 <option key={r.id} value={r.id}>
                                   {r.name}
@@ -257,7 +257,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
                           <td className="whitespace-nowrap p-2 text-ink-500">
                             {m.last_login_at ? new Date(m.last_login_at).toLocaleString() : "Never"}
                           </td>
-                          <td className="whitespace-nowrap p-2 text-ink-500">{location || "—"}</td>
+                          <td className="whitespace-nowrap p-2 text-ink-500">{location || "Not set"}</td>
                           <td className="whitespace-nowrap p-2">
                             <button
                               onClick={() => handleDelete(m)}

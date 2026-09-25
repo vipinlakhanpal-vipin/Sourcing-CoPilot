@@ -112,7 +112,7 @@ export default function ProfileMenu({
             <div className="flex items-center justify-between">
               <span className="text-ink-400">Joined</span>
               <span className="font-medium text-ink-700">
-                {createdAt ? new Date(createdAt).toLocaleDateString() : "—"}
+                {createdAt ? new Date(createdAt).toLocaleDateString() : "Not set"}
               </span>
             </div>
 

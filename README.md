@@ -2,7 +2,7 @@
 
 Customer-facing intake tool that interviews a customer through a guided,
 chat-style flow to scope their Coupa Sourcing deployment, then generates a
-structured configuration package for SCP's implementation team. Stops short
+structured configuration package for the Coupa implementation team. Stops short
 of actual Coupa configuration or system integration.
 
 ## Stack

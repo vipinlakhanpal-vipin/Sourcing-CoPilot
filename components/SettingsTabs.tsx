@@ -40,7 +40,7 @@ function AccountSection({ account }: { account: AccountInfo }) {
         <dl className="mt-3 space-y-3 text-sm">
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Name</dt>
-            <dd className="text-ink-700">{account.name || "—"}</dd>
+            <dd className="text-ink-700">{account.name || "Not set"}</dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Email</dt>
@@ -55,13 +55,13 @@ function AccountSection({ account }: { account: AccountInfo }) {
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Member since</dt>
             <dd className="text-ink-700">
-              {account.createdAt ? new Date(account.createdAt).toLocaleDateString() : "—"}
+              {account.createdAt ? new Date(account.createdAt).toLocaleDateString() : "Not set"}
             </dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-ink-400">Last signed in</dt>
             <dd className="text-right text-ink-700">
-              {account.lastLoginAt ? new Date(account.lastLoginAt).toLocaleString() : "—"}
+              {account.lastLoginAt ? new Date(account.lastLoginAt).toLocaleString() : "Not set"}
               {account.location && <div className="text-xs text-ink-400">{account.location}</div>}
             </dd>
           </div>

@@ -6,6 +6,14 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.4 — 2026-09-25
+Closed out the two remaining small items from the last round.
+- Removed "SCP" from `README.md` (dev-facing project description), matching the copy and generated-
+  document fix from v2.1.
+- Replaced the bare "—" placeholder for empty values (name, location, member since, last signed in,
+  the consultant-type dropdown) with "Not set" across Settings, the profile menu, and Admin Console,
+  for the same plain-language reason as the dash cleanup in v2.2.
+
 ## v2.3 — 2026-09-25
 Guide page copy fix.
 - Handoff tab: "a human's begins" replaced with "a Consultant takes over," naming the actual role
