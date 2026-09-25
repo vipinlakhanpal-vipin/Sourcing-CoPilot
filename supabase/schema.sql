@@ -44,6 +44,7 @@ create table if not exists invitations (
   name text not null,
   email text not null unique,
   role text not null default 'standard' check (role in ('standard', 'admin', 'super_admin')),
+  custom_role_id uuid references custom_roles(id) on delete set null,
   created_at timestamptz not null default now()
 );
 

@@ -45,6 +45,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"standard" | "admin">("standard");
+  const [inviteCustomRoleId, setInviteCustomRoleId] = useState("");
   const [sending, setSending] = useState(false);
   const [inviteMessage, setInviteMessage] = useState<string | null>(null);
 
@@ -137,7 +138,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
       const res = await fetch("/api/admin/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, role: inviteRole }),
+        body: JSON.stringify({ name, email, role: inviteRole, customRoleId: inviteCustomRoleId || null }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not create the invitation");
@@ -145,6 +146,7 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
       setName("");
       setEmail("");
       setInviteRole("standard");
+      setInviteCustomRoleId("");
       loadOverview();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not create the invitation");
@@ -318,6 +320,24 @@ export default function AdminConsole({ myEmail, myRole }: { myEmail: string; myR
           <p className="mt-1 text-xs text-ink-400">
             Applied automatically as soon as they sign up with this email. Super Admin is granted
             separately, from the table above.
+          </p>
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-ink-700">Consultant type (optional)</label>
+          <select
+            className="field-fill w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+            value={inviteCustomRoleId}
+            onChange={(e) => setInviteCustomRoleId(e.target.value)}
+          >
+            <option value="">Not set</option>
+            {roles.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-ink-400">
+            Also applied automatically at signup. Manage the list under Settings → Roles.
           </p>
         </div>
         <button

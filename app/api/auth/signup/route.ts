@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
   const { data: invitation } = await supabaseAdmin
     .from("invitations")
-    .select("role")
+    .select("role, custom_role_id")
     .eq("email", email)
     .maybeSingle();
 
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
       email,
       password_hash: passwordHash,
       role: invitation?.role ?? "standard",
+      custom_role_id: invitation?.custom_role_id ?? null,
       last_login_at: new Date().toISOString(),
       last_login_city: city ? decodeURIComponent(city) : null,
       last_login_country: country,

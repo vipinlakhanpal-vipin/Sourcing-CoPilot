@@ -7,6 +7,7 @@ const inviteSchema = z.object({
   name: z.string().trim().min(1).max(200),
   email: z.string().trim().toLowerCase().email().max(320),
   role: z.enum(["standard", "admin"]),
+  customRoleId: z.string().uuid().nullable().optional(),
 });
 
 // Records a pending invitation and hands back a ready-to-send message — there's
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "A name, email, and role are required" }, { status: 400 });
   }
-  const { name, email, role } = parsed.data;
+  const { name, email, role, customRoleId } = parsed.data;
 
   const { data: existingUser } = await supabaseAdmin
     .from("users")
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
 
   const { error } = await supabaseAdmin
     .from("invitations")
-    .upsert({ name, email, role }, { onConflict: "email" });
+    .upsert({ name, email, role, custom_role_id: customRoleId ?? null }, { onConflict: "email" });
   if (error) {
     return NextResponse.json({ error: "Could not create the invitation" }, { status: 500 });
   }

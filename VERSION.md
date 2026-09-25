@@ -6,6 +6,14 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.5 — 2026-09-25
+Consultant type can now be set at invite time.
+- The "Invite a team member" form has a new "Consultant type" field (Coupa Functional, Technical,
+  Integration, QA, etc., pulled from Settings → Roles). Picking one applies it automatically as
+  soon as that person signs up, the same way the permission role already does, instead of only
+  being assignable after the fact from the Admin Console table.
+- Needs one migration first, see the handoff message for the exact SQL.
+
 ## v2.4 — 2026-09-25
 Closed out the two remaining small items from the last round.
 - Removed "SCP" from `README.md` (dev-facing project description), matching the copy and generated-
