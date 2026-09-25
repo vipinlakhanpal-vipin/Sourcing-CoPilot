@@ -6,6 +6,22 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.0 — 2026-09-25
+Guide page rebuilt as a left-rail nav, Dashboard project charts, and a proper color palette.
+- Guide page rebuilt again: replaced the anchor-link pill nav (which could scroll a section's
+  title partly under the sticky header) with a carbon-navy left rail — same pattern as the intake
+  flow's own step rail — so switching sections is instant with no scroll-jump possible. Sections
+  renamed to be shorter and more precise: Overview, Process, Areas, Configuration, Handoff,
+  Connection, FAQ. Content now sits in a light teal-tinted, rounded frame instead of a plain white
+  box.
+- Dashboard: removed the "Projects / View projects" card (redundant with the Projects tab) and
+  replaced it with "Projects at a glance" — one mini bar chart per project showing two real KPIs,
+  intake progress (steps completed out of 14) and whether a Coupa connection exists, with a
+  Horizontal/Vertical toggle affecting every chart at once.
+- Replaced the muted/desaturated area-accent palette from v1.9 (reported as looking dull and
+  lifeless) with a proper jewel-tone palette — real vibrancy without tipping back into the
+  earlier "kiddish" brightness. Used for the per-step message bubbles and the Areas grid alike.
+
 ## v1.9 — 2026-09-25
 Guide page rebuilt for real, and a real "filled in by" differentiator.
 - Guide page rebuilt to match the approved mockup: a carbon-navy hero, subtle standardized pill
