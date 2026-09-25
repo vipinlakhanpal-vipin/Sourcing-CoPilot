@@ -6,6 +6,11 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.3 — 2026-09-25
+Guide page copy fix.
+- Handoff tab: "a human's begins" replaced with "a Consultant takes over," naming the actual role
+  instead of a generic word.
+
 ## v2.2 — 2026-09-25
 Human-sounding copy across the app, generic example names, and no exposed AI vendor name.
 - Removed the placeholder "Annie" example from the Guide page's filled-in-by badge demo, replaced

@@ -205,7 +205,7 @@ export default function GuidePage() {
             <Frame>
               <h2 className="text-lg font-extrabold text-brand-700">Handoff</h2>
               <InnerCard>
-                <p className="mb-3">This is where the app&apos;s job ends and a human&apos;s begins:</p>
+                <p className="mb-3">This is where the app&apos;s job ends and a Consultant takes over:</p>
                 <div className="timeline">
                   <div className="tstep">
                     <b>Download &amp; share</b>
