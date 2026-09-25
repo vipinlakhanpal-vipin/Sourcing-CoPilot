@@ -623,3 +623,31 @@ body {
 .fill-coupa-no {
   background-color: #e11d48;
 }
+
+/* Aria's icon drifts in a small orbit inside its circular nav tab, a
+   continuous "alive and listening" motion rather than a static glyph. */
+@keyframes aria-orbit {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2.5px, -2px);
+  }
+  50% {
+    transform: translate(0, -3.5px);
+  }
+  75% {
+    transform: translate(-2.5px, -2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+.aria-orbit {
+  animation: aria-orbit 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aria-orbit {
+    animation: none;
+  }
+}

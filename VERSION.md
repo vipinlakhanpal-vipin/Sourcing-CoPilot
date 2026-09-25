@@ -6,6 +6,16 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.7 — 2026-09-25
+Aria moved into the primary nav bar as its own circular tab.
+- Replaced the floating bottom-right chat bubble with a circular purple tab sitting right in the
+  main nav, next to Settings, so it reads as a first-class part of the app instead of a bolted-on
+  widget.
+- The icon inside is a small AI-agent glyph that continuously drifts in a small orbit, a subtle
+  "alive and listening" motion, purple to visually set Aria apart from the app's teal/navy accent
+  everywhere else. Respects reduced-motion preferences.
+- Same chat panel and behavior as before, opening from the tab instead of a floating button.
+
 ## v2.6 — 2026-09-25
 Aria: a real, working AI assistant, not a chat shell.
 - New floating chat widget (bottom right, on every page once signed in) that does all three things
