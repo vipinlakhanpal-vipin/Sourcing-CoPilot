@@ -7,9 +7,9 @@ if (!apiKey) {
   throw new Error("Missing ANTHROPIC_API_KEY environment variable");
 }
 
-const anthropic = new Anthropic({ apiKey });
+export const anthropic = new Anthropic({ apiKey });
 
-const MODEL = "claude-sonnet-5";
+export const MODEL = "claude-sonnet-5";
 
 export interface ConfigFlag {
   area: string;

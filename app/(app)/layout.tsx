@@ -6,6 +6,7 @@ import BrandMark from "@/components/BrandMark";
 import NavTabs from "@/components/NavTabs";
 import ProfileMenu from "@/components/ProfileMenu";
 import ModeToggle from "@/components/ModeToggle";
+import AriaWidget from "@/components/AriaWidget";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
@@ -54,6 +55,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-8">{children}</main>
+      {session && <AriaWidget />}
     </div>
   );
 }

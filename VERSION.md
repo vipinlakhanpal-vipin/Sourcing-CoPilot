@@ -6,6 +6,20 @@ header). The badge shows the version baked into the visitor's currently loaded b
 version still open in their browser, prompting a refresh. Prior entries below used a different
 (0.x) numbering and are kept for history only.
 
+## v2.6 — 2026-09-25
+Aria: a real, working AI assistant, not a chat shell.
+- New floating chat widget (bottom right, on every page once signed in) that does all three things
+  you asked for: answers questions about a specific project's intake answers, helps draft or
+  suggest wording for an intake question when asked, and explains the reasoning behind guidance in
+  an already generated configuration package.
+- It is context-aware without any page having to wire it up individually: it reads whichever
+  project you are currently looking at from the URL, then looks up that project's latest intake
+  answers and generated package (respecting the same ownership rules as everywhere else) before
+  answering. Off a project page, it says so plainly and asks you to open one.
+- Verified live: asked "what project am I looking at and what's its intake status" on a real
+  project and got back the correct name, step number, and package status pulled from the database,
+  not a guess.
+
 ## v2.5 — 2026-09-25
 Consultant type can now be set at invite time.
 - The "Invite a team member" form has a new "Consultant type" field (Coupa Functional, Technical,
